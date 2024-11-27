@@ -118,7 +118,7 @@ func (uc AuthController) Signup(c *gin.Context) {
 		return
 	}
 
-	accessToken, err := tokenutil.CreateAccessToken(org, `access-key`, 50)
+	accessToken, err := tokenutil.CreateAccessToken(org, `access-secret-key`, 50)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
 			Result: []models.ErrorDetail{
