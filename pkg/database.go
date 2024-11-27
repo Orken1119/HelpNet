@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"net"
+	"os"
 	"time"
 
 	"github.com/jackc/pgx/v4/pgxpool"
@@ -11,7 +12,10 @@ import (
 
 func NewConn() (*pgxpool.Pool, error) {
 
-	connStr := "postgres://postgres:Akatsuki2005@localhost:5433/postgres?sslmode=disable"
+	connStr := os.Getenv("DATABASE_URL")
+	if connStr == "" {
+		connStr = "postgres://postgres:Akatsuki2005@localhost:5433/postgres?sslmode=disable"
+	}
 
 	cfg, err := pgxpool.ParseConfig(connStr)
 

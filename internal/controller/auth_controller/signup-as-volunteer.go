@@ -1,7 +1,6 @@
 package auth_controller
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/Orken1119/HelpNet/internal/controller/auth_controller/tokenutil"
@@ -89,7 +88,6 @@ func (vc AuthController) SignupAsVolunteer(c *gin.Context) {
 		return
 	}
 	request.Password.Password = string(encryptedPassword)
-	fmt.Println("Encrypted Password:", string(encryptedPassword))
 
 	request.Password.ConfirmPassword = ""
 
