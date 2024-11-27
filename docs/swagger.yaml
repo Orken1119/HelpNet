@@ -1,0 +1,724 @@
+definitions:
+  github_com_Orken1119_HelpNet_internal_models.ChangePasswordRequest:
+    properties:
+      code:
+        type: string
+      email:
+        type: string
+      password:
+        $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.Password'
+    type: object
+  github_com_Orken1119_HelpNet_internal_models.ErrorDetail:
+    properties:
+      code:
+        type: string
+      message:
+        type: string
+      metadata:
+        $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.Properties'
+    type: object
+  github_com_Orken1119_HelpNet_internal_models.ErrorResponse:
+    properties:
+      errors:
+        items:
+          $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorDetail'
+        type: array
+    type: object
+  github_com_Orken1119_HelpNet_internal_models.Event:
+    properties:
+      address:
+        type: string
+      end_data:
+        type: string
+      event_name:
+        type: string
+      finished:
+        type: boolean
+      id:
+        type: integer
+      information:
+        type: string
+      members_count:
+        type: integer
+      members_info:
+        items:
+          $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.VolunteerProfile'
+        type: array
+      neccessary_people_count:
+        type: integer
+      organization_id:
+        type: integer
+      poster_url:
+        type: string
+      preview_url:
+        type: string
+      skill_direction:
+        type: string
+      start_data:
+        type: string
+    type: object
+  github_com_Orken1119_HelpNet_internal_models.ForgotPasswordRequest:
+    properties:
+      email:
+        type: string
+    type: object
+  github_com_Orken1119_HelpNet_internal_models.LoginRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  github_com_Orken1119_HelpNet_internal_models.OrganizationProfileEditing:
+    properties:
+      city:
+        type: string
+      direction:
+        type: string
+      email:
+        type: string
+      information:
+        type: string
+      name:
+        type: string
+      phoneNumber:
+        type: string
+      poster_url:
+        type: string
+      years_of_experience:
+        type: integer
+    type: object
+  github_com_Orken1119_HelpNet_internal_models.OrganizationRequest:
+    properties:
+      email:
+        type: string
+      password:
+        $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.Password'
+    type: object
+  github_com_Orken1119_HelpNet_internal_models.Password:
+    properties:
+      confirmPassword:
+        type: string
+      password:
+        type: string
+    type: object
+  github_com_Orken1119_HelpNet_internal_models.Properties:
+    properties:
+      additionalProp1:
+        type: string
+      additionalProp2:
+        type: string
+      additionalProp3:
+        type: string
+    type: object
+  github_com_Orken1119_HelpNet_internal_models.SuccessResponse:
+    properties:
+      metadata:
+        $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.Properties'
+      result: {}
+    type: object
+  github_com_Orken1119_HelpNet_internal_models.VolunteerProfile:
+    properties:
+      age:
+        type: integer
+      city:
+        type: string
+      direction:
+        type: string
+      email:
+        type: string
+      grade:
+        type: integer
+      id:
+        type: integer
+      name:
+        type: string
+      phoneNumber:
+        type: string
+      photo_url:
+        type: string
+      skills:
+        type: string
+    type: object
+  github_com_Orken1119_HelpNet_internal_models.VolunteerSignUp:
+    properties:
+      email:
+        type: string
+      password:
+        $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.Password'
+    type: object
+externalDocs:
+  description: OpenAPI
+  url: https://swagger.io/resources/open-api/
+host: localhost:2000
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: This is a sample server celler server.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: HelpNet API
+  version: "1.0"
+paths:
+  /authentication/manual-organization-registration:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: body json
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.OrganizationRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
+  /authentication/signin-as-volunteer:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: query params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
+  /authentication/signup-as-volunteer:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: query params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.VolunteerSignUp'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
+  /change-forgotten-password:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: query params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ChangePasswordRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
+  /forgot-password:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: query params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ForgotPasswordRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
+  /ivents/create-ivent:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: query params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.Event'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
+      security:
+      - Bearer: []
+      tags:
+      - ivent
+  /ivents/delete-ivent/{id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
+      security:
+      - Bearer: []
+      tags:
+      - ivent
+  /ivents/finish/{id}:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: Event ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
+      security:
+      - Bearer: []
+      tags:
+      - ivent
+  /ivents/finished-events-by-organization:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
+      security:
+      - Bearer: []
+      tags:
+      - ivent
+  /ivents/get-ivent-by-id/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
+      security:
+      - Bearer: []
+      tags:
+      - ivent
+  /ivents/get-ivents:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
+      security:
+      - Bearer: []
+      tags:
+      - ivent
+  /ivents/get-organizations-in-process:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
+      security:
+      - Bearer: []
+      tags:
+      - ivent
+  /ivents/get-user-participating:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
+      security:
+      - Bearer: []
+      tags:
+      - ivent
+  /ivents/get-volunteer-finished-events:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
+      security:
+      - Bearer: []
+      tags:
+      - ivent
+  /ivents/participate-event:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
+      security:
+      - Bearer: []
+      tags:
+      - ivent
+  /ivents/update-ivent:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: query params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.Event'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
+      security:
+      - Bearer: []
+      tags:
+      - ivent
+  /organizations/delete-organizations/{id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
+      security:
+      - Bearer: []
+      tags:
+      - organization
+  /organizations/edit-organization-profile:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: query params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.OrganizationProfileEditing'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
+      security:
+      - Bearer: []
+      tags:
+      - organization
+  /organizations/profile:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
+      security:
+      - Bearer: []
+      tags:
+      - organization
+  /signin-as-organization:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: body json
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
+  /user/change-password:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: query params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.Password'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
+      security:
+      - Bearer: []
+      tags:
+      - user
+  /user/edit-profile:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: query params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.VolunteerProfile'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
+      security:
+      - Bearer: []
+      tags:
+      - user
+  /user/profile:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
+      security:
+      - Bearer: []
+      tags:
+      - user
+securityDefinitions:
+  Bearer:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
