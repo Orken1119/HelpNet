@@ -22,7 +22,7 @@ import (
 // @license.name  Apache 2.0
 // @license.url   http://www.apache.org/licenses/LICENSE-2.0.html
 
-// @host      localhost:2000
+// @host      helpnet-1.onrender.com
 
 // @securityDefinitions.apikey Bearer
 // @in header
