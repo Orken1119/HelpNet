@@ -15,7 +15,7 @@
         },
         "version": "1.0"
     },
-    "host": "localhost:2000",
+    "host": "helpnet-1.onrender.com",
     "paths": {
         "/authentication/change-forgotten-password": {
             "post": {

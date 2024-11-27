@@ -46,7 +46,6 @@ func Setup(app pkg.Application, router *gin.Engine) {
 		MaxAge:           12 * time.Hour,
 	}))
 
-	// Authentication routes (no JWT required)
 	authenticationRouter := router.Group("/authentication")
 	{
 		authenticationRouter.POST("/signup-as-volunteer", loginController.SignupAsVolunteer)
@@ -57,13 +56,10 @@ func Setup(app pkg.Application, router *gin.Engine) {
 		authenticationRouter.POST("/change-forgotten-password", loginController.ChangeForgottenPassword)
 	}
 
-	// Public Swagger route
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
-	// Use JWT middleware only for routes that require authentication
 	router.Use(middleware.JWTAuth(`access-secret-key`))
 
-	// Routes that require authentication
 	userRouter := router.Group("/user")
 	{
 		userRouter.GET("/profile", userController.GetProfile)
