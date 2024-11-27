@@ -75,6 +75,9 @@ func (vl *AuthController) SigninAsVolunteer(c *gin.Context) {
 				{
 					Code:    "TOKEN_ERROR",
 					Message: "Error to create access token",
+					Metadata: models.Properties{
+						Properties1: err.Error(),
+					},
 				},
 			},
 		})

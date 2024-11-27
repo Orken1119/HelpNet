@@ -15,7 +15,7 @@ import (
 // @Param request body models.ForgotPasswordRequest true "query params"
 // @Success 200 {object} map[string]string
 // @Failure default {object} models.ErrorResponse
-// @Router /forgot-password [post]
+// @Router /authentication/forgot-password [post]
 func (cp *AuthController) ForgotPassword(c *gin.Context) {
 	var request models.ForgotPasswordRequest
 

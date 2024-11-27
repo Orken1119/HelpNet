@@ -88,7 +88,6 @@ func (vc AuthController) SignupAsVolunteer(c *gin.Context) {
 		return
 	}
 	request.Password.Password = string(encryptedPassword)
-
 	request.Password.ConfirmPassword = ""
 
 	// Create volunteer
@@ -98,9 +97,6 @@ func (vc AuthController) SignupAsVolunteer(c *gin.Context) {
 				{
 					Code:    "ERROR_CREATE_USERS",
 					Message: "Couldn't create user",
-					Metadata: models.Properties{
-						Properties1: err.Error(),
-					},
 				},
 			},
 		})

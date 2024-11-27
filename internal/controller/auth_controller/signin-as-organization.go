@@ -11,10 +11,10 @@ import (
 
 // @Accept json
 // @Produce json
-// @Param request body models.SigninRequest true "body json"
+// @Param request body models.SigninRequest true "query params"
 // @Success 200 {object} models.SuccessResponse
 // @Failure default {object} models.ErrorResponse
-// @Router /signin-as-organization [post]
+// @Router /authentication/signin-as-organization [post]
 func (lc *AuthController) Signin(c *gin.Context) {
 	var loginRequest models.SigninRequest
 

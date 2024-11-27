@@ -24,112 +24,7 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/authentication/manual-organization-registration": {
-            "post": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "parameters": [
-                    {
-                        "description": "body json",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.OrganizationRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse"
-                        }
-                    },
-                    "default": {
-                        "description": "",
-                        "schema": {
-                            "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/authentication/signin-as-volunteer": {
-            "post": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "parameters": [
-                    {
-                        "description": "query params",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.LoginRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse"
-                        }
-                    },
-                    "default": {
-                        "description": "",
-                        "schema": {
-                            "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/authentication/signup-as-volunteer": {
-            "post": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "parameters": [
-                    {
-                        "description": "query params",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.VolunteerSignUp"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse"
-                        }
-                    },
-                    "default": {
-                        "description": "",
-                        "schema": {
-                            "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/change-forgotten-password": {
+        "/authentication/change-forgotten-password": {
             "post": {
                 "consumes": [
                     "application/json"
@@ -167,7 +62,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/forgot-password": {
+        "/authentication/forgot-password": {
             "post": {
                 "consumes": [
                     "application/json"
@@ -194,6 +89,146 @@ const docTemplate = `{
                             "additionalProperties": {
                                 "type": "string"
                             }
+                        }
+                    },
+                    "default": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/authentication/manual-organization-registration": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "description": "body json",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.SignUpRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse"
+                        }
+                    },
+                    "default": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/authentication/signin-as-organization": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "description": "query params",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.SigninRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse"
+                        }
+                    },
+                    "default": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/authentication/signin-as-volunteer": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "description": "query params",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.SigninRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse"
+                        }
+                    },
+                    "default": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/authentication/signup-as-volunteer": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "description": "query params",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.SignUpRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse"
                         }
                     },
                     "default": {
@@ -767,41 +802,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/signin-as-organization": {
-            "post": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "parameters": [
-                    {
-                        "description": "body json",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.LoginRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse"
-                        }
-                    },
-                    "default": {
-                        "description": "",
-                        "schema": {
-                            "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse"
-                        }
-                    }
-                }
-            }
-        },
         "/user/change-password": {
             "put": {
                 "security": [
@@ -1025,17 +1025,6 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_Orken1119_HelpNet_internal_models.LoginRequest": {
-            "type": "object",
-            "properties": {
-                "email": {
-                    "type": "string"
-                },
-                "password": {
-                    "type": "string"
-                }
-            }
-        },
         "github_com_Orken1119_HelpNet_internal_models.OrganizationProfileEditing": {
             "type": "object",
             "properties": {
@@ -1065,17 +1054,6 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_Orken1119_HelpNet_internal_models.OrganizationRequest": {
-            "type": "object",
-            "properties": {
-                "email": {
-                    "type": "string"
-                },
-                "password": {
-                    "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.Password"
-                }
-            }
-        },
         "github_com_Orken1119_HelpNet_internal_models.Password": {
             "type": "object",
             "properties": {
@@ -1097,6 +1075,28 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "additionalProp3": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_Orken1119_HelpNet_internal_models.SignUpRequest": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.Password"
+                }
+            }
+        },
+        "github_com_Orken1119_HelpNet_internal_models.SigninRequest": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
                     "type": "string"
                 }
             }
@@ -1142,17 +1142,6 @@ const docTemplate = `{
                 },
                 "skills": {
                     "type": "string"
-                }
-            }
-        },
-        "github_com_Orken1119_HelpNet_internal_models.VolunteerSignUp": {
-            "type": "object",
-            "properties": {
-                "email": {
-                    "type": "string"
-                },
-                "password": {
-                    "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.Password"
                 }
             }
         }

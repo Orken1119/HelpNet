@@ -52,7 +52,7 @@ func (ur *UserRepository) CreateVolunteer(c context.Context, volunteer models.Vo
 		email, 
 		password, 
 		phone_number, 
-		volunteer_name, 
+		name, 
 		created_at, 
 		skills, 
 		city, 
@@ -110,7 +110,7 @@ func (ur *UserRepository) ChangeForgottenVolunteersPassword(c context.Context, c
 
 func (ur *UserRepository) CreatePasswordResetCode(c context.Context, email string, code string) error {
 	currentTime := time.Now().Format("2006-01-02 15:04:05")
-	query := `INSERT INTO passwordresetcode(email, code, created_at)
+	query := `INSERT INTO passwordresetcode(email, code, createdAt)
 	VALUES ($1, $2, $3);`
 
 	_, err := ur.db.Exec(c, query, email, code, currentTime)
@@ -124,7 +124,7 @@ func (ur *UserRepository) CreatePasswordResetCode(c context.Context, email strin
 func (ur *UserRepository) GetVolunteerByEmail(c context.Context, email string) (models.User, error) {
 	var user models.User
 
-	query := `SELECT id, email, password, created_at, name, role_id FROM volunteers where email = $1`
+	query := `SELECT id, email, password, created_at, role_id FROM volunteers where email = $1`
 	row := ur.db.QueryRow(c, query, email)
 	err := row.Scan(&user.ID, &user.Email, &user.Password, &user.CreatedAt, &user.RoleID)
 
@@ -157,7 +157,7 @@ func (ur *UserRepository) EditVolunteerProfile(c context.Context, userID int, vo
 	SET 
 		email = $1,
 		phone_number = $2,
-		volunteer_name = $3,
+		name = $3,
 		skills = $4,
 		city = $5,
 		age = $6
@@ -201,7 +201,7 @@ func (ur *UserRepository) GetOrganizationByEmail(c context.Context, email string
 	err := row.Scan(&org.ID, &org.Email, &org.Password, &org.CreatedAt, &org.RoleID)
 
 	if err != nil {
-		return org, nil
+		return org, err
 	}
 	return org, nil
 

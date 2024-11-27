@@ -13,7 +13,7 @@ import (
 // @Param request body models.ChangePasswordRequest true "query params"
 // @Success 200 {object} map[string]string
 // @Failure default {object} models.ErrorResponse
-// @Router /change-forgotten-password [post]
+// @Router /authentication/change-forgotten-password [post]
 func (fp *AuthController) ChangeForgottenPassword(c *gin.Context) {
 	var request models.ChangePasswordRequest
 

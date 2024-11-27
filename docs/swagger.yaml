@@ -62,13 +62,6 @@ definitions:
       email:
         type: string
     type: object
-  github_com_Orken1119_HelpNet_internal_models.LoginRequest:
-    properties:
-      email:
-        type: string
-      password:
-        type: string
-    type: object
   github_com_Orken1119_HelpNet_internal_models.OrganizationProfileEditing:
     properties:
       city:
@@ -88,13 +81,6 @@ definitions:
       years_of_experience:
         type: integer
     type: object
-  github_com_Orken1119_HelpNet_internal_models.OrganizationRequest:
-    properties:
-      email:
-        type: string
-      password:
-        $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.Password'
-    type: object
   github_com_Orken1119_HelpNet_internal_models.Password:
     properties:
       confirmPassword:
@@ -109,6 +95,20 @@ definitions:
       additionalProp2:
         type: string
       additionalProp3:
+        type: string
+    type: object
+  github_com_Orken1119_HelpNet_internal_models.SignUpRequest:
+    properties:
+      email:
+        type: string
+      password:
+        $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.Password'
+    type: object
+  github_com_Orken1119_HelpNet_internal_models.SigninRequest:
+    properties:
+      email:
+        type: string
+      password:
         type: string
     type: object
   github_com_Orken1119_HelpNet_internal_models.SuccessResponse:
@@ -140,13 +140,6 @@ definitions:
       skills:
         type: string
     type: object
-  github_com_Orken1119_HelpNet_internal_models.VolunteerSignUp:
-    properties:
-      email:
-        type: string
-      password:
-        $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.Password'
-    type: object
 externalDocs:
   description: OpenAPI
   url: https://swagger.io/resources/open-api/
@@ -164,73 +157,7 @@ info:
   title: HelpNet API
   version: "1.0"
 paths:
-  /authentication/manual-organization-registration:
-    post:
-      consumes:
-      - application/json
-      parameters:
-      - description: body json
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.OrganizationRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse'
-        default:
-          description: ""
-          schema:
-            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
-  /authentication/signin-as-volunteer:
-    post:
-      consumes:
-      - application/json
-      parameters:
-      - description: query params
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.LoginRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse'
-        default:
-          description: ""
-          schema:
-            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
-  /authentication/signup-as-volunteer:
-    post:
-      consumes:
-      - application/json
-      parameters:
-      - description: query params
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.VolunteerSignUp'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse'
-        default:
-          description: ""
-          schema:
-            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
-  /change-forgotten-password:
+  /authentication/change-forgotten-password:
     post:
       consumes:
       - application/json
@@ -254,7 +181,7 @@ paths:
           description: ""
           schema:
             $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
-  /forgot-password:
+  /authentication/forgot-password:
     post:
       consumes:
       - application/json
@@ -274,6 +201,94 @@ paths:
             additionalProperties:
               type: string
             type: object
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
+  /authentication/manual-organization-registration:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: body json
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.SignUpRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
+  /authentication/signin-as-organization:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: query params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.SigninRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
+  /authentication/signin-as-volunteer:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: query params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.SigninRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
+  /authentication/signup-as-volunteer:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: query params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.SignUpRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse'
         default:
           description: ""
           schema:
@@ -619,28 +634,6 @@ paths:
       - Bearer: []
       tags:
       - organization
-  /signin-as-organization:
-    post:
-      consumes:
-      - application/json
-      parameters:
-      - description: body json
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.LoginRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse'
-        default:
-          description: ""
-          schema:
-            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
   /user/change-password:
     put:
       consumes:
