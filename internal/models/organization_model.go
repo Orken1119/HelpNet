@@ -66,6 +66,7 @@ type OrganizationRepository interface {
 	GetOrganizationProfile(c context.Context, id int) (*OrganizationProfile, error)
 	ChangePasswordForOrganizations(c context.Context, orgID int, password string) error
 	GetAllOrganizations(c context.Context) ([]OrganizationProfile, error)
+	DeleteMemberFromEvent(c context.Context, userID int, eventID int) error
 }
 
 func (u *OrganizationPreview) GetID() uint {

@@ -141,6 +141,8 @@ type UserRepository interface {
 
 	AddCertificate(c context.Context, imageUrl string, userID int) error
 	DeleteCertificate(c context.Context, id int) error
+
+	SearchEvent(c context.Context, name string) (*[]Event, error)
 }
 
 func (u *User) GetID() uint {

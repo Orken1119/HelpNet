@@ -69,6 +69,7 @@ func Setup(app pkg.Application, router *gin.Engine) {
 		userRouter.POST("/add-certificate", userController.AddCertificate)
 		userRouter.DELETE("/delete-certificate/:id", userController.DeleteCertificate)
 		userRouter.GET("/get-all-volunteers-profile", userController.GetAllVolunteersProfile)
+		userRouter.GET("/search-event/:name", userController.SearchEvent)
 	}
 
 	eventRouter := router.Group("/events")
@@ -93,5 +94,6 @@ func Setup(app pkg.Application, router *gin.Engine) {
 		organizationRouter.GET("/profile/:id", organizationController.GetOrganizationProfile)
 		organizationRouter.PUT("/edit-organization-profile", organizationController.EditOrganization)
 		organizationRouter.GET("/get-all-organizations-profile", organizationController.GetAllOrganizationsProfile)
+		organizationRouter.DELETE("/delete-member/:memberID/event-id/:eventID", organizationController.DeleteMember)
 	}
 }

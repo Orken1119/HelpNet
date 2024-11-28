@@ -692,6 +692,73 @@
                 }
             }
         },
+        "/organizations/delete-member/{memberID}/event-id/{eventID}": {
+            "delete": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "organization"
+                ],
+                "summary": "permission for organization",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Member ID",
+                        "name": "memberID",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Event ID",
+                        "name": "eventID",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Member successfully removed",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "result": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid ID format",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/organizations/delete-organizations/{id}": {
             "delete": {
                 "security": [
@@ -1233,6 +1300,63 @@
                                     "properties": {
                                         "result": {
                                             "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.VolunteerProfile"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "default": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/search-event/{name}": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "exist permission for organization and volunteers",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "name",
+                        "name": "name",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "result": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.Event"
+                                            }
                                         }
                                     }
                                 }

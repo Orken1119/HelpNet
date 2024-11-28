@@ -17,6 +17,52 @@ func NewUserRepository(db *pgxpool.Pool) models.UserRepository {
 	return &UserRepository{db: db}
 }
 
+func (ur *UserRepository) SearchEvent(c context.Context, name string) (*[]models.Event, error) {
+	query := `
+        SELECT 
+            id, event_name, information, organization_id, poster_url, 
+            preview_url, skill_direction, address, start_date, end_date, 
+            necessary_people_count, members_count, finished
+        FROM events
+        WHERE event_name ILIKE $1
+    `
+	// Подготовка строки поиска (например, добавление % для шаблонного поиска)
+	searchTerm := "%" + name + "%"
+
+	rows, err := ur.db.Query(c, query, searchTerm)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var events []models.Event
+	for rows.Next() {
+		var event models.Event
+		if err := rows.Scan(&event.ID, &event.Name, &event.Information, &event.OrganizationID,
+			&event.PosterUrl, &event.PreviewUrl, &event.SkillsDirection, &event.Address,
+			&event.StartingDate, &event.EndDate, &event.NecCountOfPeople,
+			&event.HowManyPeopleAccepted, &event.Finished); err != nil {
+			return nil, err
+		}
+
+		// Добавление списка волонтеров к событию (опционально)
+		members, err := ur.getVolunteersForEvent(c, event.ID)
+		if err != nil {
+			return nil, err
+		}
+		event.Members = members
+
+		events = append(events, event)
+	}
+
+	// Проверка ошибок после итерации по строкам
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return &events, nil
+}
+
 func (ur *UserRepository) GetVolunteerProfile(c context.Context, userID int) (models.VolunteerProfile, error) {
 	var user models.VolunteerProfile
 
@@ -518,4 +564,33 @@ func (ur *UserRepository) getCertificates(c context.Context, userID int) (*[]mod
 	}
 
 	return &certificates, nil
+}
+
+func (ur *UserRepository) getVolunteersForEvent(c context.Context, eventID int) (*[]models.VolunteerMainInfo, error) {
+	query := `
+        SELECT 
+            v.id, v.email, v.name, v.photo_url, v.phone_number, v.skills, 
+            v.city, v.age, v.grade, v.direction
+        FROM volunteers v
+        INNER JOIN volunteer_events ve ON ve.volunteer_id = v.id
+        WHERE ve.event_id = $1
+    `
+
+	rows, err := ur.db.Query(c, query, eventID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var members []models.VolunteerMainInfo
+	for rows.Next() {
+		var member models.VolunteerMainInfo
+		if err := rows.Scan(&member.ID, &member.Email, &member.Name, &member.PhotoUrl,
+			&member.PhoneNumber, &member.Skills, &member.City, &member.Age, &member.Grade, &member.Direction); err != nil {
+			return nil, err
+		}
+		members = append(members, member)
+	}
+
+	return &members, nil
 }

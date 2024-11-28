@@ -15,6 +15,33 @@ type OrganizationRepository struct {
 func NewOrganizationRepository(db *pgxpool.Pool) models.OrganizationRepository {
 	return &OrganizationRepository{db: db}
 }
+
+func (op *OrganizationRepository) DeleteMemberFromEvent(c context.Context, userID int, eventID int) error {
+	query := `
+        DELETE FROM volunteer_events
+        WHERE volunteer_id = $1 AND event_id = $2
+    `
+
+	// Выполнение запроса
+	_, err := op.db.Exec(c, query, userID, eventID)
+	if err != nil {
+		return err
+	}
+
+	// Опционально обновляем количество участников в событии
+	updateEventQuery := `
+        UPDATE events
+        SET members_count = members_count - 1
+        WHERE id = $1 AND members_count > 0
+    `
+	_, err = op.db.Exec(c, updateEventQuery, eventID)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (op *OrganizationRepository) GetAllOrganizations(c context.Context) ([]models.OrganizationProfile, error) {
 	var organizations []models.OrganizationProfile
 

@@ -695,6 +695,46 @@ paths:
       summary: exist permission for organization
       tags:
       - event
+  /organizations/delete-member/{memberID}/event-id/{eventID}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: Member ID
+        in: path
+        name: memberID
+        required: true
+        type: integer
+      - description: Event ID
+        in: path
+        name: eventID
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Member successfully removed
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse'
+            - properties:
+                result:
+                  type: string
+              type: object
+        "400":
+          description: Invalid ID format
+          schema:
+            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
+        "500":
+          description: Server error
+          schema:
+            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: permission for organization
+      tags:
+      - organization
   /organizations/delete-organizations/{id}:
     delete:
       consumes:
@@ -1011,6 +1051,39 @@ paths:
             - properties:
                 result:
                   $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.VolunteerProfile'
+              type: object
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: exist permission for organization and volunteers
+      tags:
+      - user
+  /user/search-event/{name}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: name
+        in: path
+        name: name
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse'
+            - properties:
+                result:
+                  items:
+                    $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.Event'
+                  type: array
               type: object
         default:
           description: ""
