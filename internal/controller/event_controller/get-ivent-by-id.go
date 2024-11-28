@@ -8,14 +8,14 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// @Tags		ivent
+// @Tags		event
 // @Accept		json
 // @Produce	json
 // @Param id path int true "id"
 // @Security Bearer
 // @Success	200		{object}	models.SuccessResponse
 // @Failure	default	{object}	models.ErrorResponse
-// @Router		/ivents/get-ivent-by-id/{id} [get]
+// @Router		/events/get-event-by-id/{id} [get]
 func (av *EventController) GetEventById(c *gin.Context) {
 	idVal := c.Param("id")
 	id, err := strconv.Atoi(idVal)

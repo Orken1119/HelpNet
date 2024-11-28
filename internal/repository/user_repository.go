@@ -20,13 +20,67 @@ func NewUserRepository(db *pgxpool.Pool) models.UserRepository {
 func (ur *UserRepository) GetVolunteerProfile(c context.Context, userID int) (models.VolunteerProfile, error) {
 	var user models.VolunteerProfile
 
-	query := `SELECT id, email, phone_number, volunteer_name, skills, city, age FROM volunteers where id = $1`
-	row := ur.db.QueryRow(c, query, userID)
-	err := row.Scan(&user.ID, &user.Email, &user.PhoneNumber, &user.Name, &user.Skills, &user.City, &user.Age)
-
+	// Query basic volunteer profile details
+	profileQuery := `SELECT id, email, photo_url, phone_number, name, skills, city, age, grade FROM volunteers WHERE id = $1`
+	row := ur.db.QueryRow(c, profileQuery, userID)
+	err := row.Scan(&user.ID, &user.Email, &user.PhotoUrl, &user.PhoneNumber, &user.Name, &user.Skills, &user.City, &user.Age, &user.Grade)
 	if err != nil {
 		return user, err
 	}
+
+	// Query current events the volunteer is participating in
+	currentEventsQuery := `
+		SELECT e.id, e.event_name, e.information, e.organization_id, e.poster_url, 
+		       e.preview_url, e.skill_direction, e.address, e.start_date, e.end_date,
+		       e.necessary_people_count, e.members_count, e.finished
+		FROM events e
+		JOIN volunteer_events ve ON ve.event_id = e.id
+		WHERE ve.volunteer_id = $1 AND ve.finished = false`
+	currentRows, err := ur.db.Query(c, currentEventsQuery, userID)
+	if err != nil {
+		return user, err
+	}
+	defer currentRows.Close()
+
+	var currentEvents []models.Event
+	for currentRows.Next() {
+		var event models.Event
+		if err := currentRows.Scan(&event.ID, &event.Name, &event.Information, &event.OrganizationID,
+			&event.PosterUrl, &event.PreviewUrl, &event.SkillsDirection, &event.Address,
+			&event.StartingDate, &event.EndDate, &event.NecCountOfPeople,
+			&event.HowManyPeopleAccepted, &event.Finished); err != nil {
+			return user, err
+		}
+		currentEvents = append(currentEvents, event)
+	}
+	user.EventsNow = &currentEvents
+
+	// Query finished events the volunteer participated in
+	finishedEventsQuery := `
+		SELECT e.id, e.event_name, e.information, e.organization_id, e.poster_url, 
+		       e.preview_url, e.skill_direction, e.address, e.start_date, e.end_date,
+		       e.necessary_people_count, e.members_count, e.finished
+		FROM events e
+		JOIN volunteer_events ve ON ve.event_id = e.id
+		WHERE ve.volunteer_id = $1 AND ve.finished = true`
+	finishedRows, err := ur.db.Query(c, finishedEventsQuery, userID)
+	if err != nil {
+		return user, err
+	}
+	defer finishedRows.Close()
+
+	var finishedEvents []models.Event
+	for finishedRows.Next() {
+		var event models.Event
+		if err := finishedRows.Scan(&event.ID, &event.Name, &event.Information, &event.OrganizationID,
+			&event.PosterUrl, &event.PreviewUrl, &event.SkillsDirection, &event.Address,
+			&event.StartingDate, &event.EndDate, &event.NecCountOfPeople,
+			&event.HowManyPeopleAccepted, &event.Finished); err != nil {
+			return user, err
+		}
+		finishedEvents = append(finishedEvents, event)
+	}
+	user.Participated = &finishedEvents
 
 	return user, nil
 }
@@ -152,7 +206,7 @@ func (ur *UserRepository) ChangePassword(c context.Context, userID int, password
 	return nil
 }
 
-func (ur *UserRepository) EditVolunteerProfile(c context.Context, userID int, volunteer models.VolunteerProfile) error {
+func (ur *UserRepository) EditVolunteerProfile(c context.Context, userID int, volunteer models.VolunteerProfileEditing) error {
 	query := `UPDATE volunteers
 	SET 
 		email = $1,
@@ -160,10 +214,23 @@ func (ur *UserRepository) EditVolunteerProfile(c context.Context, userID int, vo
 		name = $3,
 		skills = $4,
 		city = $5,
-		age = $6
-	WHERE id = $7 ;
+		age = $6,
+		photo_url =$7,
+		direction = $8
+	WHERE id = $9;
 	`
-	_, err := ur.db.Exec(c, query, volunteer.Email, volunteer.PhoneNumber, volunteer.Name, volunteer.Skills, volunteer.City, volunteer.Age, userID)
+	_, err := ur.db.Exec(
+		c,
+		query,
+		volunteer.Email,
+		volunteer.PhoneNumber,
+		volunteer.Name,
+		volunteer.Skills,
+		volunteer.City,
+		volunteer.Age,
+		volunteer.PhotoUrl,
+		volunteer.Direction,
+		userID)
 	if err != nil {
 		return err
 	}

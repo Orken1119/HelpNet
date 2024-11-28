@@ -24,7 +24,7 @@ definitions:
           $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorDetail'
         type: array
     type: object
-  github_com_Orken1119_HelpNet_internal_models.Event:
+  github_com_Orken1119_HelpNet_internal_models.EventForCreating:
     properties:
       address:
         type: string
@@ -32,21 +32,32 @@ definitions:
         type: string
       event_name:
         type: string
-      finished:
-        type: boolean
-      id:
-        type: integer
       information:
         type: string
-      members_count:
-        type: integer
-      members_info:
-        items:
-          $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.VolunteerProfile'
-        type: array
       neccessary_people_count:
         type: integer
       organization_id:
+        type: integer
+      poster_url:
+        type: string
+      preview_url:
+        type: string
+      skill_direction:
+        type: string
+      start_data:
+        type: string
+    type: object
+  github_com_Orken1119_HelpNet_internal_models.EventForEditing:
+    properties:
+      address:
+        type: string
+      end_data:
+        type: string
+      event_name:
+        type: string
+      information:
+        type: string
+      neccessary_people_count:
         type: integer
       poster_url:
         type: string
@@ -117,7 +128,7 @@ definitions:
         $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.Properties'
       result: {}
     type: object
-  github_com_Orken1119_HelpNet_internal_models.VolunteerProfile:
+  github_com_Orken1119_HelpNet_internal_models.VolunteerProfileEditing:
     properties:
       age:
         type: integer
@@ -127,8 +138,6 @@ definitions:
         type: string
       email:
         type: string
-      grade:
-        type: integer
       id:
         type: integer
       name:
@@ -293,7 +302,7 @@ paths:
           description: ""
           schema:
             $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
-  /ivents/create-ivent:
+  /events/create-event:
     post:
       consumes:
       - application/json
@@ -303,7 +312,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.Event'
+          $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.EventForCreating'
       produces:
       - application/json
       responses:
@@ -318,8 +327,8 @@ paths:
       security:
       - Bearer: []
       tags:
-      - ivent
-  /ivents/delete-ivent/{id}:
+      - event
+  /events/delete-event/{id}:
     delete:
       consumes:
       - application/json
@@ -343,8 +352,8 @@ paths:
       security:
       - Bearer: []
       tags:
-      - ivent
-  /ivents/finish/{id}:
+      - event
+  /events/finish/{id}:
     put:
       consumes:
       - application/json
@@ -372,8 +381,8 @@ paths:
       security:
       - Bearer: []
       tags:
-      - ivent
-  /ivents/finished-events-by-organization:
+      - event
+  /events/finished-events-by-organization:
     get:
       consumes:
       - application/json
@@ -395,8 +404,8 @@ paths:
       security:
       - Bearer: []
       tags:
-      - ivent
-  /ivents/get-ivent-by-id/{id}:
+      - event
+  /events/get-event-by-id/{id}:
     get:
       consumes:
       - application/json
@@ -420,8 +429,8 @@ paths:
       security:
       - Bearer: []
       tags:
-      - ivent
-  /ivents/get-ivents:
+      - event
+  /events/get-events:
     get:
       consumes:
       - application/json
@@ -439,8 +448,8 @@ paths:
       security:
       - Bearer: []
       tags:
-      - ivent
-  /ivents/get-organizations-in-process:
+      - event
+  /events/get-organizations-in-process:
     get:
       consumes:
       - application/json
@@ -462,8 +471,8 @@ paths:
       security:
       - Bearer: []
       tags:
-      - ivent
-  /ivents/get-user-participating:
+      - event
+  /events/get-user-participating:
     get:
       consumes:
       - application/json
@@ -485,8 +494,8 @@ paths:
       security:
       - Bearer: []
       tags:
-      - ivent
-  /ivents/get-volunteer-finished-events:
+      - event
+  /events/get-volunteer-finished-events:
     get:
       consumes:
       - application/json
@@ -508,9 +517,9 @@ paths:
       security:
       - Bearer: []
       tags:
-      - ivent
-  /ivents/participate-event:
-    get:
+      - event
+  /events/participate-event/{id}:
+    post:
       consumes:
       - application/json
       parameters:
@@ -537,18 +546,24 @@ paths:
       security:
       - Bearer: []
       tags:
-      - ivent
-  /ivents/update-ivent:
+      - event
+  /events/update-event/{id}:
     put:
       consumes:
       - application/json
+      description: Update an event's details by its ID
       parameters:
-      - description: query params
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Event details
         in: body
         name: request
         required: true
         schema:
-          $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.Event'
+          $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.EventForEditing'
       produces:
       - application/json
       responses:
@@ -556,14 +571,19 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse'
-        default:
-          description: ""
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
+        "404":
+          description: Event not found
           schema:
             $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
       security:
       - Bearer: []
+      summary: Update an existing event
       tags:
-      - ivent
+      - event
   /organizations/delete-organizations/{id}:
     delete:
       consumes:
@@ -662,6 +682,34 @@ paths:
       - Bearer: []
       tags:
       - user
+  /user/change-password-for-org:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: query params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.Password'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
+      security:
+      - Bearer: []
+      tags:
+      - user
   /user/edit-profile:
     put:
       consumes:
@@ -672,7 +720,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.VolunteerProfile'
+          $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.VolunteerProfileEditing'
       produces:
       - application/json
       responses:

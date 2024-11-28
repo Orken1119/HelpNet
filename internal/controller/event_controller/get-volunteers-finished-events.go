@@ -7,14 +7,14 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// @Tags        ivent
+// @Tags        event
 // @Accept      json
 // @Produce     json
 // @Security    Bearer
 // @Success     200 {object} models.SuccessResponse
 // @Failure     400 {object} models.ErrorResponse
 // @Failure     500 {object} models.ErrorResponse
-// @Router      /ivents/get-volunteer-finished-events [get]
+// @Router      /events/get-volunteer-finished-events [get]
 func (av *EventController) GetVolFinishedEvents(c *gin.Context) {
 	userID := c.GetUint("userID")
 

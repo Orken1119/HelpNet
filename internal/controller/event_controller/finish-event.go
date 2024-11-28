@@ -8,7 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// @Tags        ivent
+// @Tags        event
 // @Accept      json
 // @Produce     json
 // @Security    Bearer
@@ -16,7 +16,7 @@ import (
 // @Success     200 {object} models.SuccessResponse
 // @Failure     400 {object} models.ErrorResponse
 // @Failure     500 {object} models.ErrorResponse
-// @Router      /ivents/finish/{id} [put]
+// @Router      /events/finish/{id} [put]
 func (av *EventController) FinishEvent(c *gin.Context) {
 	eventID := c.Param("id")
 

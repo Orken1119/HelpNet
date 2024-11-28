@@ -65,27 +65,28 @@ func Setup(app pkg.Application, router *gin.Engine) {
 		userRouter.GET("/profile", userController.GetProfile)
 		userRouter.PUT("/edit-profile", userController.EditPersonalData)
 		userRouter.PUT("/change-password", userController.ChangePassword)
+		userRouter.PUT("/change-password-for-org", userController.ChangePasswordForOrg)
 	}
 
 	eventRouter := router.Group("/events")
 	{
-		eventRouter.GET("/create-ivent", eventController.CreateEvent)
-		eventRouter.GET("/delete-ivent/:id", eventController.CreateEvent)
-		eventRouter.GET("/finish/:id", eventController.CreateEvent)
-		eventRouter.GET("/get-ivent-by-id/:id", eventController.CreateEvent)
-		eventRouter.GET("/get-ivents", eventController.CreateEvent)
-		eventRouter.GET("/finished-events-by-organization", eventController.CreateEvent)
-		eventRouter.GET("/get-organizations-in-process", eventController.CreateEvent)
-		eventRouter.GET("/get-user-participating", eventController.CreateEvent)
-		eventRouter.GET("/get-volunteer-finished-events", eventController.CreateEvent)
-		eventRouter.GET("/participate-event", eventController.CreateEvent)
-		eventRouter.GET("/update-ivent", eventController.CreateEvent)
+		eventRouter.POST("/create-event", eventController.CreateEvent)
+		eventRouter.DELETE("/delete-event/:id", eventController.DeleteEvent)
+		eventRouter.PUT("/finish/:id", eventController.FinishEvent)
+		eventRouter.GET("/get-event-by-id/:id", eventController.GetEventById)
+		eventRouter.GET("/get-events", eventController.GetAllEvent)
+		eventRouter.GET("/finished-events-by-organization", eventController.GetOrgFinishedEvents)
+		eventRouter.GET("/get-organizations-in-process", eventController.GetOrgEvents)
+		eventRouter.GET("/get-user-participating", eventController.GetVolEvents)
+		eventRouter.GET("/get-volunteer-finished-events", eventController.GetVolFinishedEvents)
+		eventRouter.POST("/participate-event/:id", eventController.JoinEvent)
+		eventRouter.PUT("/update-event/:id", eventController.UpdateEvent)
 	}
 
 	organizationRouter := router.Group("/organizations")
 	{
 		organizationRouter.DELETE("/delete-organiztion/:id", organizationController.DeleteOrganization)
-		organizationRouter.GET("/profile", organizationController.DeleteOrganization)
+		organizationRouter.GET("/profile", organizationController.GetOrganizationProfile)
 		organizationRouter.PUT("/edit-organization-profile", organizationController.EditOrganization)
 	}
 }

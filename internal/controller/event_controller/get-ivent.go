@@ -7,13 +7,13 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// @Tags		ivent
+// @Tags		event
 // @Accept		json
 // @Produce	json
 // @Security Bearer
 // @Success	200		{object}	models.SuccessResponse
 // @Failure	default	{object}	models.ErrorResponse
-// @Router		/ivents/get-ivents [get]
+// @Router		/events/get-events [get]
 func (av *EventController) GetAllEvent(c *gin.Context) {
 	ivents, err := av.EventRepository.GetAllEvent(c)
 	if err != nil {

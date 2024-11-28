@@ -11,18 +11,16 @@ type EventController struct {
 	EventRepository models.EventRepository
 }
 
-// @Tags		ivent
+// @Tags		event
 // @Accept		json
 // @Produce	json
-// @Param request body models.Event true "query params"
+// @Param request body models.EventForCreating true "query params"
 // @Security Bearer
 // @Success	200		{object}	models.SuccessResponse
 // @Failure	default	{object}	models.ErrorResponse
-// @Router		/ivents/create-ivent [post]
+// @Router		/events/create-event [post]
 func (av *EventController) CreateEvent(c *gin.Context) {
-	var ivent models.Event
-
-	id := c.GetUint("orgID")
+	var ivent models.EventForCreating
 
 	err := c.ShouldBind(&ivent)
 	if err != nil {
@@ -37,13 +35,16 @@ func (av *EventController) CreateEvent(c *gin.Context) {
 		return
 	}
 
-	readyivent, err := av.EventRepository.CreateEvent(c, &ivent, int(id))
+	readyivent, err := av.EventRepository.CreateEvent(c, &ivent)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
 			Result: []models.ErrorDetail{
 				{
 					Code:    "IVENT_ERROR",
 					Message: "Error creating event",
+					Metadata: models.Properties{
+						Properties1: err.Error(),
+					},
 				},
 			},
 		})

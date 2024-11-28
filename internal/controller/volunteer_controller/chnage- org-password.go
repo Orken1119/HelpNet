@@ -1,9 +1,7 @@
 package volunteer_controller
 
 import (
-	"fmt"
 	"net/http"
-	"unicode"
 
 	models "github.com/Orken1119/HelpNet/internal/models"
 	"github.com/gin-gonic/gin"
@@ -17,8 +15,8 @@ import (
 // @Security Bearer
 // @Success 200 {object} map[string]string
 // @Failure default {object} models.ErrorResponse
-// @Router /user/change-password [put]
-func (sc *UserController) ChangePassword(c *gin.Context) {
+// @Router /user/change-password-for-org [put]
+func (sc *UserController) ChangePasswordForOrg(c *gin.Context) {
 	var request models.Password
 
 	userID := c.GetUint("userID")
@@ -77,7 +75,7 @@ func (sc *UserController) ChangePassword(c *gin.Context) {
 	}
 	request.Password = string(encryptedPassword)
 
-	err = sc.UserRepository.ChangePassword(c, int(userID), request.Password)
+	err = sc.UserRepository.ChangePasswordForOrg(c, int(userID), request.Password)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
 			Result: []models.ErrorDetail{
@@ -95,38 +93,4 @@ func (sc *UserController) ChangePassword(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"message": "Password was changed successfully"})
 
-}
-
-func ValidatePassword(password string) error {
-	if len(password) < 8 {
-		return fmt.Errorf("password must be at least 8 characters long")
-	}
-
-	var (
-		hasUpper, hasLower, hasDigit bool
-	)
-
-	for _, char := range password {
-		switch {
-		case unicode.IsUpper(char):
-			hasUpper = true
-		case unicode.IsLower(char):
-			hasLower = true
-		case unicode.IsDigit(char):
-			hasDigit = true
-		}
-	}
-	if !hasUpper || !hasLower || !hasDigit {
-		return fmt.Errorf("password must contain at least one uppercase letter, one lowercase letter and one digit")
-	}
-
-	return nil
-}
-
-// Функция подтверждения
-func ConfirmPassword(password string, confirm string) error {
-	if password != confirm {
-		return fmt.Errorf("doesn't match the password")
-	}
-	return nil
 }

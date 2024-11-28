@@ -40,6 +40,9 @@ func (av *OrganizationController) EditOrganization(c *gin.Context) {
 				{
 					Code:    "IVENT_ERROR",
 					Message: "Error to create ivent",
+					Metadata: models.Properties{
+						Properties1: err.Error(),
+					},
 				},
 			},
 		})

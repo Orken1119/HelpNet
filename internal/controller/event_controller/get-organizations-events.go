@@ -7,14 +7,14 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// @Tags        ivent
+// @Tags        event
 // @Accept      json
 // @Produce     json
 // @Security    Bearer
 // @Success     200 {object} models.SuccessResponse
 // @Failure     400 {object} models.ErrorResponse
 // @Failure     500 {object} models.ErrorResponse
-// @Router      /ivents/get-organizations-in-process [get]
+// @Router      /events/get-organizations-in-process [get]
 func (av *EventController) GetOrgEvents(c *gin.Context) {
 	orgID := c.GetUint("orgID")
 

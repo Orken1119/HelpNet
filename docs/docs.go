@@ -240,7 +240,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/ivents/create-ivent": {
+        "/events/create-event": {
             "post": {
                 "security": [
                     {
@@ -254,7 +254,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "ivent"
+                    "event"
                 ],
                 "parameters": [
                     {
@@ -263,7 +263,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.Event"
+                            "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.EventForCreating"
                         }
                     }
                 ],
@@ -283,7 +283,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/ivents/delete-ivent/{id}": {
+        "/events/delete-event/{id}": {
             "delete": {
                 "security": [
                     {
@@ -297,7 +297,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "ivent"
+                    "event"
                 ],
                 "parameters": [
                     {
@@ -324,7 +324,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/ivents/finish/{id}": {
+        "/events/finish/{id}": {
             "put": {
                 "security": [
                     {
@@ -338,7 +338,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "ivent"
+                    "event"
                 ],
                 "parameters": [
                     {
@@ -371,7 +371,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/ivents/finished-events-by-organization": {
+        "/events/finished-events-by-organization": {
             "get": {
                 "security": [
                     {
@@ -385,7 +385,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "ivent"
+                    "event"
                 ],
                 "responses": {
                     "200": {
@@ -409,7 +409,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/ivents/get-ivent-by-id/{id}": {
+        "/events/get-event-by-id/{id}": {
             "get": {
                 "security": [
                     {
@@ -423,7 +423,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "ivent"
+                    "event"
                 ],
                 "parameters": [
                     {
@@ -450,7 +450,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/ivents/get-ivents": {
+        "/events/get-events": {
             "get": {
                 "security": [
                     {
@@ -464,7 +464,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "ivent"
+                    "event"
                 ],
                 "responses": {
                     "200": {
@@ -482,7 +482,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/ivents/get-organizations-in-process": {
+        "/events/get-organizations-in-process": {
             "get": {
                 "security": [
                     {
@@ -496,7 +496,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "ivent"
+                    "event"
                 ],
                 "responses": {
                     "200": {
@@ -520,7 +520,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/ivents/get-user-participating": {
+        "/events/get-user-participating": {
             "get": {
                 "security": [
                     {
@@ -534,7 +534,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "ivent"
+                    "event"
                 ],
                 "responses": {
                     "200": {
@@ -558,7 +558,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/ivents/get-volunteer-finished-events": {
+        "/events/get-volunteer-finished-events": {
             "get": {
                 "security": [
                     {
@@ -572,7 +572,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "ivent"
+                    "event"
                 ],
                 "responses": {
                     "200": {
@@ -596,8 +596,8 @@ const docTemplate = `{
                 }
             }
         },
-        "/ivents/participate-event": {
-            "get": {
+        "/events/participate-event/{id}": {
+            "post": {
                 "security": [
                     {
                         "Bearer": []
@@ -610,7 +610,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "ivent"
+                    "event"
                 ],
                 "parameters": [
                     {
@@ -643,13 +643,14 @@ const docTemplate = `{
                 }
             }
         },
-        "/ivents/update-ivent": {
+        "/events/update-event/{id}": {
             "put": {
                 "security": [
                     {
                         "Bearer": []
                     }
                 ],
+                "description": "Update an event's details by its ID",
                 "consumes": [
                     "application/json"
                 ],
@@ -657,16 +658,24 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "ivent"
+                    "event"
                 ],
+                "summary": "Update an existing event",
                 "parameters": [
                     {
-                        "description": "query params",
+                        "type": "integer",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Event details",
                         "name": "request",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.Event"
+                            "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.EventForEditing"
                         }
                     }
                 ],
@@ -677,8 +686,14 @@ const docTemplate = `{
                             "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse"
                         }
                     },
-                    "default": {
-                        "description": "",
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Event not found",
                         "schema": {
                             "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse"
                         }
@@ -848,6 +863,52 @@ const docTemplate = `{
                 }
             }
         },
+        "/user/change-password-for-org": {
+            "put": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "parameters": [
+                    {
+                        "description": "query params",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.Password"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/user/edit-profile": {
             "put": {
                 "security": [
@@ -871,7 +932,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.VolunteerProfile"
+                            "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.VolunteerProfileEditing"
                         }
                     }
                 ],
@@ -967,7 +1028,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_Orken1119_HelpNet_internal_models.Event": {
+        "github_com_Orken1119_HelpNet_internal_models.EventForCreating": {
             "type": "object",
             "properties": {
                 "address": {
@@ -979,28 +1040,45 @@ const docTemplate = `{
                 "event_name": {
                     "type": "string"
                 },
-                "finished": {
-                    "type": "boolean"
-                },
-                "id": {
-                    "type": "integer"
-                },
                 "information": {
                     "type": "string"
-                },
-                "members_count": {
-                    "type": "integer"
-                },
-                "members_info": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.VolunteerProfile"
-                    }
                 },
                 "neccessary_people_count": {
                     "type": "integer"
                 },
                 "organization_id": {
+                    "type": "integer"
+                },
+                "poster_url": {
+                    "type": "string"
+                },
+                "preview_url": {
+                    "type": "string"
+                },
+                "skill_direction": {
+                    "type": "string"
+                },
+                "start_data": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_Orken1119_HelpNet_internal_models.EventForEditing": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "type": "string"
+                },
+                "end_data": {
+                    "type": "string"
+                },
+                "event_name": {
+                    "type": "string"
+                },
+                "information": {
+                    "type": "string"
+                },
+                "neccessary_people_count": {
                     "type": "integer"
                 },
                 "poster_url": {
@@ -1110,7 +1188,7 @@ const docTemplate = `{
                 "result": {}
             }
         },
-        "github_com_Orken1119_HelpNet_internal_models.VolunteerProfile": {
+        "github_com_Orken1119_HelpNet_internal_models.VolunteerProfileEditing": {
             "type": "object",
             "properties": {
                 "age": {
@@ -1124,9 +1202,6 @@ const docTemplate = `{
                 },
                 "email": {
                     "type": "string"
-                },
-                "grade": {
-                    "type": "integer"
                 },
                 "id": {
                     "type": "integer"

@@ -10,14 +10,14 @@ import (
 // @Tags user
 // @Accept json
 // @Produce json
-// @Param request body models.VolunteerProfile true "query params"
+// @Param request body models.VolunteerProfileEditing true "query params"
 // @Security Bearer
 // @Success 200 {object} map[string]string
 // @Failure default {object} models.ErrorResponse
 // @Router /user/edit-profile [put]
 func (sc *UserController) EditPersonalData(c *gin.Context) {
 	userID := c.GetUint("userID")
-	var request models.VolunteerProfile
+	var request models.VolunteerProfileEditing
 
 	err := c.ShouldBind(&request)
 	if err != nil {

@@ -44,8 +44,8 @@ func (op *OrganizationRepository) EditOrganizationProfile(c context.Context, org
 		organization.City,
 		organization.Information,
 		organization.Direction,
-		organization,
-		organization.VolunteerExperienceYears)
+		organization.VolunteerExperienceYears,
+		orgID)
 	if err != nil {
 		return err
 	}
@@ -140,9 +140,9 @@ func (op *OrganizationRepository) getProjectsByStatus(c context.Context, organiz
 }
 
 // Вспомогательный метод для получения участников проекта
-func (op *OrganizationRepository) getEventMembers(c context.Context, eventID int) (*[]models.VolunteerProfile, error) {
+func (op *OrganizationRepository) getEventMembers(c context.Context, eventID int) (*[]models.VolunteerMainInfo, error) {
 	query := `
-		SELECT v.id, v.name, v.photo_url, v.phone_number, v.city, v.skills, v.age, v.grade
+		SELECT v.id, v.name, v.photo_url, v.phone_number, v.city, v.skills, v.age, v.direction, v.grade
 		FROM volunteers v
 		JOIN volunteer_events ve ON v.id = ve.volunteer_id
 		WHERE ve.event_id = $1`
@@ -152,9 +152,9 @@ func (op *OrganizationRepository) getEventMembers(c context.Context, eventID int
 	}
 	defer rows.Close()
 
-	var members []models.VolunteerProfile
+	var members []models.VolunteerMainInfo
 	for rows.Next() {
-		var member models.VolunteerProfile
+		var member models.VolunteerMainInfo
 		err := rows.Scan(
 			&member.ID,
 			&member.Name,
@@ -163,6 +163,7 @@ func (op *OrganizationRepository) getEventMembers(c context.Context, eventID int
 			&member.City,
 			&member.Skills,
 			&member.Age,
+			&member.Direction,
 			&member.Grade,
 		)
 		if err != nil {

@@ -8,7 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// @Tags        ivent
+// @Tags        event
 // @Accept      json
 // @Produce     json
 // @Param id path int true "id"
@@ -16,7 +16,7 @@ import (
 // @Success     200 {object} models.SuccessResponse
 // @Failure     400 {object} models.ErrorResponse
 // @Failure     500 {object} models.ErrorResponse
-// @Router      /ivents/participate-event [get]
+// @Router      /events/participate-event/{id} [post]
 func (av *EventController) JoinEvent(c *gin.Context) {
 
 	userID := c.GetUint("userID")
@@ -44,6 +44,9 @@ func (av *EventController) JoinEvent(c *gin.Context) {
 				{
 					Code:    "PARTICIPATE_EVENT_ERROR",
 					Message: "Error adding the user to the event.",
+					Metadata: models.Properties{
+						Properties1: err.Error(),
+					},
 				},
 			},
 		})

@@ -32,7 +32,7 @@ func (fp *AuthController) ChangeForgottenPassword(c *gin.Context) {
 
 	_, err = fp.UserRepository.GetVolunteerByEmail(c, request.Email)
 	if err != nil {
-		_, err = fp.UserRepository.GetVolunteerByEmail(c, request.Email)
+		_, err := fp.UserRepository.GetVolunteerByEmail(c, request.Email)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, models.ErrorResponse{
 				Result: []models.ErrorDetail{

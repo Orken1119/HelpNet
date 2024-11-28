@@ -16,23 +16,34 @@ func NewEventRepository(db *pgxpool.Pool) models.EventRepository {
 }
 
 // Event Repository methods
-
-func (or *EventRepository) CreateEvent(c context.Context, event *models.Event, organizationID int) (*models.Event, error) {
+func (or *EventRepository) CreateEvent(c context.Context, event *models.EventForCreating) (*models.Event, error) {
 	query := `INSERT INTO events (event_name, information, organization_id, poster_url, preview_url, 
-                               skill_direction, address, start_date, end_date, necessary_people_count, members_count, finished) 
-              VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, 0, false) RETURNING id`
+                               skill_direction, address, start_date, end_date, necessary_people_count) 
+              VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING id`
 
 	var id int
-	err := or.db.QueryRow(c, query, event.Name, event.Information, organizationID, event.PosterUrl, event.PreviewUrl,
-		event.SkillsDirection, event.Address, event.StartingDate, event.EndDate,
-		event.NecCountOfPeople, event.HowManyPeopleAccepted, event.Finished).Scan(&id)
-
+	err := or.db.QueryRow(c, query, event.Name, event.Information, event.OrganizationID, event.PosterUrl, event.PreviewUrl,
+		event.SkillsDirection, event.Address, event.StartingDate, event.EndDate, event.NecCountOfPeople).Scan(&id)
 	if err != nil {
 		return nil, err
 	}
 
-	event.ID = id
-	return event, nil
+	finished := false
+	return &models.Event{
+		ID:                    id,
+		Name:                  event.Name,
+		Information:           event.Information,
+		OrganizationID:        event.OrganizationID,
+		PosterUrl:             event.PosterUrl,
+		PreviewUrl:            event.PreviewUrl,
+		SkillsDirection:       event.SkillsDirection,
+		Address:               event.Address,
+		StartingDate:          event.StartingDate,
+		EndDate:               event.EndDate,
+		NecCountOfPeople:      event.NecCountOfPeople,
+		HowManyPeopleAccepted: 0,
+		Finished:              &finished,
+	}, nil
 }
 
 func (or *EventRepository) DeleteEvent(c context.Context, id int) error {
@@ -41,7 +52,7 @@ func (or *EventRepository) DeleteEvent(c context.Context, id int) error {
 	return err
 }
 
-func (or *EventRepository) UpdateEvent(c context.Context, event *models.Event) error {
+func (or *EventRepository) UpdateEvent(c context.Context, event *models.EventForEditing, eventID int) error {
 	query := `UPDATE events SET event_name = $1, information = $2, poster_url = $3, preview_url = $4, 
               skill_direction = $5, address = $6, start_date = $7, end_date = $8, 
               necessary_people_count = $9
@@ -49,7 +60,7 @@ func (or *EventRepository) UpdateEvent(c context.Context, event *models.Event) e
 
 	_, err := or.db.Exec(c, query, event.Name, event.Information, event.PosterUrl, event.PreviewUrl,
 		event.SkillsDirection, event.Address, event.StartingDate, event.EndDate,
-		event.NecCountOfPeople, event.ID)
+		event.NecCountOfPeople, eventID)
 	return err
 }
 
@@ -171,10 +182,8 @@ func (or *EventRepository) FinishEvent(c context.Context, id int) error {
 func (or *EventRepository) ParticipateEvent(c context.Context, userID int, eventID int) error {
 	// Добавление участника в таблицу volunteer_events
 	participateQuery := `
-		INSERT INTO volunteer_events (volunteer_id, event_id, in_process) 
-		VALUES ($1, $2, true) 
-		ON CONFLICT (volunteer_id, event_id) 
-		DO UPDATE SET in_process = true`
+		INSERT INTO volunteer_events (volunteer_id, event_id) 
+		VALUES ($1, $2);`
 	_, err := or.db.Exec(c, participateQuery, userID, eventID)
 	if err != nil {
 		return err
@@ -247,7 +256,7 @@ func (or *EventRepository) GetVolunteerFinishedEvents(c context.Context, userID 
 		}
 
 		// Подзапрос для получения участников события
-		membersQuery := `SELECT v.id, v.name, v.email, v.photo_url, v.skills, v.city, v.age 
+		membersQuery := `SELECT v.id, v.name, v.email, v.photo_url, v.skills, v.city, v.age, v.direction, v.grade 
                          FROM volunteers v 
                          JOIN volunteer_events ve ON ve.volunteer_id = v.id 
                          WHERE ve.event_id = $1`
@@ -256,11 +265,11 @@ func (or *EventRepository) GetVolunteerFinishedEvents(c context.Context, userID 
 			return nil, err
 		}
 
-		var members []models.VolunteerProfile
+		var members []models.VolunteerMainInfo
 		for memberRows.Next() {
-			var member models.VolunteerProfile
+			var member models.VolunteerMainInfo
 			if err := memberRows.Scan(&member.ID, &member.Name, &member.Email, &member.PhotoUrl,
-				&member.Skills, &member.City, &member.Age); err != nil {
+				&member.Skills, &member.City, &member.Age, &member.Direction, &member.Grade); err != nil {
 				memberRows.Close()
 				return nil, err
 			}
@@ -278,11 +287,11 @@ func (or *EventRepository) GetVolunteerFinishedEvents(c context.Context, userID 
 	return &events, nil
 }
 
-func (or *EventRepository) GetVolunteersForEvent(c context.Context, eventID int) (*[]models.VolunteerProfile, error) {
+func (or *EventRepository) GetVolunteersForEvent(c context.Context, eventID int) (*[]models.VolunteerMainInfo, error) {
 	query := `
         SELECT 
             v.id, v.email, v.name, v.photo_url, v.phone_number, v.skills, 
-            v.city, v.age, v.grade
+            v.city, v.age, v.grade, v.direction
         FROM volunteers v
         INNER JOIN volunteer_events ve ON ve.volunteer_id = v.id
         WHERE ve.event_id = $1
@@ -294,11 +303,11 @@ func (or *EventRepository) GetVolunteersForEvent(c context.Context, eventID int)
 	}
 	defer rows.Close()
 
-	var members []models.VolunteerProfile
+	var members []models.VolunteerMainInfo
 	for rows.Next() {
-		var member models.VolunteerProfile
+		var member models.VolunteerMainInfo
 		if err := rows.Scan(&member.ID, &member.Email, &member.Name, &member.PhotoUrl,
-			&member.PhoneNumber, &member.Skills, &member.City, &member.Age, &member.Grade); err != nil {
+			&member.PhoneNumber, &member.Skills, &member.City, &member.Age, &member.Grade, &member.Direction); err != nil {
 			return nil, err
 		}
 		members = append(members, member)
