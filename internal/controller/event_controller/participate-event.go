@@ -11,7 +11,6 @@ import (
 // @Tags        event
 // @Accept      json
 // @Produce     json
-// @Param userID path int true "userID"
 // @Param id path int true "id"
 // @Security    Bearer
 // @Success     200 {object} models.SuccessResponse{result=string} "Successfully joined the event"
@@ -20,22 +19,7 @@ import (
 // @Router      /events/participate-event/{userID}/{id} [post]
 func (av *EventController) JoinEvent(c *gin.Context) {
 
-	userIdVal := c.Param("userID")
-	userID, err := strconv.Atoi(userIdVal)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, models.ErrorResponse{
-			Result: []models.ErrorDetail{
-				{
-					Code:    "ERROR_GET_IVENT",
-					Message: "incorrect id format",
-					Metadata: models.Properties{
-						Properties1: err.Error(),
-					},
-				},
-			},
-		})
-		return
-	}
+	userID := c.GetUint("userID")
 
 	idVal := c.Param("id")
 	id, err := strconv.Atoi(idVal)
@@ -54,7 +38,7 @@ func (av *EventController) JoinEvent(c *gin.Context) {
 		return
 	}
 
-	err = av.EventRepository.ParticipateEvent(c, userID, id)
+	err = av.EventRepository.ParticipateEvent(c, int(userID), id)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
 			Result: []models.ErrorDetail{

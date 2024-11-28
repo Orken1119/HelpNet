@@ -25,6 +25,9 @@ func (av *EventController) GetEventsByDirection(c *gin.Context) {
 				{
 					Code:    "IVENT_ERROR",
 					Message: "Error to get all ivents",
+					Metadata: models.Properties{
+						Properties1: err.Error(),
+					},
 				},
 			},
 		})

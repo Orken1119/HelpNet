@@ -279,7 +279,7 @@ definitions:
 externalDocs:
   description: OpenAPI
   url: https://swagger.io/resources/open-api/
-host: localhost:2000
+host: helpnet-1.onrender.com
 info:
   contact:
     email: support@swagger.io
@@ -617,11 +617,6 @@ paths:
       consumes:
       - application/json
       parameters:
-      - description: userID
-        in: path
-        name: userID
-        required: true
-        type: integer
       - description: id
         in: path
         name: id
