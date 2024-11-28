@@ -9,6 +9,7 @@ import (
 )
 
 // @Tags        event
+// @Summary	exist permission for volunteer
 // @Accept      json
 // @Produce     json
 // @Param id path int true "id"

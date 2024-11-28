@@ -458,6 +458,7 @@ paths:
             $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
       security:
       - Bearer: []
+      summary: exist permission for organization
       tags:
       - event
   /events/delete-event/{id}:
@@ -488,6 +489,7 @@ paths:
             $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
       security:
       - Bearer: []
+      summary: exist permission for organization
       tags:
       - event
   /events/finish/{id}:
@@ -522,6 +524,7 @@ paths:
             $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
       security:
       - Bearer: []
+      summary: exist permission for organization
       tags:
       - event
   /events/get-event-by-direction/{direction}:
@@ -554,6 +557,7 @@ paths:
             $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
       security:
       - Bearer: []
+      summary: exist permission for volunteer
       tags:
       - event
   /events/get-event-by-id/{id}:
@@ -584,6 +588,7 @@ paths:
             $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
       security:
       - Bearer: []
+      summary: exist permission for volunteer
       tags:
       - event
   /events/get-events:
@@ -610,6 +615,7 @@ paths:
             $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
       security:
       - Bearer: []
+      summary: exist permission for volunteer
       tags:
       - event
   /events/participate-event/{userID}/{id}:
@@ -644,6 +650,7 @@ paths:
             $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
       security:
       - Bearer: []
+      summary: exist permission for volunteer
       tags:
       - event
   /events/update-event/{id}:
@@ -685,7 +692,7 @@ paths:
             $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
       security:
       - Bearer: []
-      summary: Update an existing event
+      summary: exist permission for organization
       tags:
       - event
   /organizations/delete-organizations/{id}:
@@ -716,6 +723,7 @@ paths:
             $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
       security:
       - Bearer: []
+      summary: exist permission for organization
       tags:
       - organization
   /organizations/edit-organization-profile:
@@ -747,6 +755,7 @@ paths:
             $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
       security:
       - Bearer: []
+      summary: exist permission for organization
       tags:
       - organization
   /organizations/get-all-organizations-profile:
@@ -773,6 +782,7 @@ paths:
             $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
       security:
       - Bearer: []
+      summary: exist permission for volunteer
       tags:
       - organization
   /organizations/profile/{id}:
@@ -803,6 +813,7 @@ paths:
             $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
       security:
       - Bearer: []
+      summary: exist permission for organization and for volunteer
       tags:
       - organization
   /user/add-certificate:
@@ -834,6 +845,7 @@ paths:
             $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
       security:
       - Bearer: []
+      summary: exist permission for volunteer
       tags:
       - user
   /user/change-password:
@@ -862,6 +874,7 @@ paths:
             $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
       security:
       - Bearer: []
+      summary: exist permission for volunteer
       tags:
       - user
   /user/change-password-for-org:
@@ -890,6 +903,7 @@ paths:
             $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
       security:
       - Bearer: []
+      summary: exist permission for organization
       tags:
       - user
   /user/delete-certificate/{id}:
@@ -917,6 +931,7 @@ paths:
             $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
       security:
       - Bearer: []
+      summary: exist permission for volunteer
       tags:
       - user
   /user/edit-profile:
@@ -945,6 +960,7 @@ paths:
             $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
       security:
       - Bearer: []
+      summary: exist permission for volunteer
       tags:
       - user
   /user/get-all-volunteers-profile:
@@ -971,6 +987,7 @@ paths:
             $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
       security:
       - Bearer: []
+      summary: exist permission for organizations and volunteers
       tags:
       - user
   /user/profile/{id}:
@@ -1001,6 +1018,7 @@ paths:
             $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
       security:
       - Bearer: []
+      summary: exist permission for organization and volunteers
       tags:
       - user
 securityDefinitions:

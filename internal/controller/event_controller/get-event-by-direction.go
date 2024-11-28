@@ -8,6 +8,7 @@ import (
 )
 
 // @Tags		event
+// @Summary	exist permission for volunteer
 // @Accept		json
 // @Produce	json
 // @Param direction path string true "direction"

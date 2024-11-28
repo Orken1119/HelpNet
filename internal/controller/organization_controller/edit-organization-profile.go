@@ -8,6 +8,7 @@ import (
 )
 
 // @Tags		organization
+// @Summary	exist permission for organization
 // @Accept		json
 // @Produce	json
 // @Param request body models.OrganizationProfileEditing true "query params"

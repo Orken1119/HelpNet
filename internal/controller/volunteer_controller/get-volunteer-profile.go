@@ -13,6 +13,7 @@ type UserController struct {
 }
 
 // @Tags user
+// @Summary	exist permission for organization and volunteers
 // @Accept json
 // @Produce json
 // @Param id path int true "id"

@@ -9,6 +9,7 @@ import (
 )
 
 // @Tags organization
+// @Summary	exist permission for organization and for volunteer
 // @Accept json
 // @Produce json
 // @Param id path int true "id"

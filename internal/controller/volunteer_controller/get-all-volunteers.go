@@ -8,6 +8,7 @@ import (
 )
 
 // @Tags user
+// @Summary	exist permission for organizations and volunteers
 // @Accept json
 // @Produce json
 // @Security Bearer

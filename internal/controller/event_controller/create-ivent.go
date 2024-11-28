@@ -12,6 +12,7 @@ type EventController struct {
 }
 
 // @Tags		event
+// @Summary	exist permission for organization
 // @Accept		json
 // @Produce	json
 // @Param request body models.EventForCreating true "query params"

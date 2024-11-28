@@ -9,7 +9,7 @@ import (
 )
 
 // @Tags		event
-// @Summary	Update an existing event
+// @Summary	exist permission for organization
 // @Description	Update an event's details by its ID
 // @Accept		json
 // @Produce	json

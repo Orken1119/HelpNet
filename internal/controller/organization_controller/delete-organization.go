@@ -13,6 +13,7 @@ type OrganizationController struct {
 }
 
 // @Tags		organization
+// @Summary	exist permission for organization
 // @Accept		json
 // @Produce	json
 // @Param id path int true "id"

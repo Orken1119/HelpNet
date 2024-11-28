@@ -256,6 +256,7 @@ const docTemplate = `{
                 "tags": [
                     "event"
                 ],
+                "summary": "exist permission for organization",
                 "parameters": [
                     {
                         "description": "query params",
@@ -311,6 +312,7 @@ const docTemplate = `{
                 "tags": [
                     "event"
                 ],
+                "summary": "exist permission for organization",
                 "parameters": [
                     {
                         "type": "integer",
@@ -364,6 +366,7 @@ const docTemplate = `{
                 "tags": [
                     "event"
                 ],
+                "summary": "exist permission for organization",
                 "parameters": [
                     {
                         "type": "integer",
@@ -423,6 +426,7 @@ const docTemplate = `{
                 "tags": [
                     "event"
                 ],
+                "summary": "exist permission for volunteer",
                 "parameters": [
                     {
                         "type": "string",
@@ -479,6 +483,7 @@ const docTemplate = `{
                 "tags": [
                     "event"
                 ],
+                "summary": "exist permission for volunteer",
                 "parameters": [
                     {
                         "type": "integer",
@@ -532,6 +537,7 @@ const docTemplate = `{
                 "tags": [
                     "event"
                 ],
+                "summary": "exist permission for volunteer",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -579,6 +585,7 @@ const docTemplate = `{
                 "tags": [
                     "event"
                 ],
+                "summary": "exist permission for volunteer",
                 "parameters": [
                     {
                         "type": "integer",
@@ -639,7 +646,7 @@ const docTemplate = `{
                 "tags": [
                     "event"
                 ],
-                "summary": "Update an existing event",
+                "summary": "exist permission for organization",
                 "parameters": [
                     {
                         "type": "integer",
@@ -708,6 +715,7 @@ const docTemplate = `{
                 "tags": [
                     "organization"
                 ],
+                "summary": "exist permission for organization",
                 "parameters": [
                     {
                         "type": "integer",
@@ -761,6 +769,7 @@ const docTemplate = `{
                 "tags": [
                     "organization"
                 ],
+                "summary": "exist permission for organization",
                 "parameters": [
                     {
                         "description": "query params",
@@ -816,6 +825,7 @@ const docTemplate = `{
                 "tags": [
                     "organization"
                 ],
+                "summary": "exist permission for volunteer",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -863,6 +873,7 @@ const docTemplate = `{
                 "tags": [
                     "organization"
                 ],
+                "summary": "exist permission for organization and for volunteer",
                 "parameters": [
                     {
                         "type": "integer",
@@ -916,6 +927,7 @@ const docTemplate = `{
                 "tags": [
                     "user"
                 ],
+                "summary": "exist permission for volunteer",
                 "parameters": [
                     {
                         "description": "query params",
@@ -971,6 +983,7 @@ const docTemplate = `{
                 "tags": [
                     "user"
                 ],
+                "summary": "exist permission for volunteer",
                 "parameters": [
                     {
                         "description": "query params",
@@ -1017,6 +1030,7 @@ const docTemplate = `{
                 "tags": [
                     "user"
                 ],
+                "summary": "exist permission for organization",
                 "parameters": [
                     {
                         "description": "query params",
@@ -1063,6 +1077,7 @@ const docTemplate = `{
                 "tags": [
                     "user"
                 ],
+                "summary": "exist permission for volunteer",
                 "parameters": [
                     {
                         "type": "integer",
@@ -1107,6 +1122,7 @@ const docTemplate = `{
                 "tags": [
                     "user"
                 ],
+                "summary": "exist permission for volunteer",
                 "parameters": [
                     {
                         "description": "query params",
@@ -1153,6 +1169,7 @@ const docTemplate = `{
                 "tags": [
                     "user"
                 ],
+                "summary": "exist permission for organizations and volunteers",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -1200,6 +1217,7 @@ const docTemplate = `{
                 "tags": [
                     "user"
                 ],
+                "summary": "exist permission for organization and volunteers",
                 "parameters": [
                     {
                         "type": "integer",

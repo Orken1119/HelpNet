@@ -11,6 +11,7 @@ import (
 )
 
 // @Tags user
+// @Summary	exist permission for volunteer
 // @Accept json
 // @Produce json
 // @Param request body models.Password true "query params"
