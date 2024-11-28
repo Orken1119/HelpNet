@@ -427,7 +427,7 @@ const docTemplate = `{
                     {
                         "type": "string",
                         "description": "direction",
-                        "name": "directioin",
+                        "name": "direction",
                         "in": "path",
                         "required": true
                     }

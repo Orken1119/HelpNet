@@ -86,11 +86,6 @@ func (or *EventRepository) GetEventsByDirection(c context.Context, direction str
 		events = append(events, event)
 	}
 
-	// Check for any errors during iteration
-	if err = rows.Err(); err != nil {
-		return nil, err
-	}
-
 	return &events, nil
 }
 

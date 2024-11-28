@@ -10,7 +10,7 @@ import (
 // @Tags		event
 // @Accept		json
 // @Produce	json
-// @Param directioin path string true "direction"
+// @Param direction path string true "direction"
 // @Security Bearer
 // @Success     200 {object} models.SuccessResponse{result=[]models.Event}
 // @Failure	default	{object}	models.ErrorResponse
