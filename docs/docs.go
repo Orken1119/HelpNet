@@ -569,7 +569,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/events/participate-event/{userID}/{id}": {
+        "/events/participate-event/{id}": {
             "post": {
                 "security": [
                     {
@@ -1341,7 +1341,7 @@ const docTemplate = `{
                 "summary": "exist permission for organization and volunteers",
                 "parameters": [
                     {
-                        "type": "integer",
+                        "type": "string",
                         "description": "name",
                         "name": "name",
                         "in": "path",

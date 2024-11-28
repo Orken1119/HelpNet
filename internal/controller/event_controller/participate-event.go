@@ -17,7 +17,7 @@ import (
 // @Success     200 {object} models.SuccessResponse{result=string} "Successfully joined the event"
 // @Failure     400 {object} models.ErrorResponse
 // @Failure     500 {object} models.ErrorResponse
-// @Router      /events/participate-event/{userID}/{id} [post]
+// @Router      /events/participate-event/{id} [post]
 func (av *EventController) JoinEvent(c *gin.Context) {
 
 	userID := c.GetUint("userID")

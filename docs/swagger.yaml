@@ -618,7 +618,7 @@ paths:
       summary: exist permission for volunteer
       tags:
       - event
-  /events/participate-event/{userID}/{id}:
+  /events/participate-event/{id}:
     post:
       consumes:
       - application/json
@@ -1070,7 +1070,7 @@ paths:
         in: path
         name: name
         required: true
-        type: integer
+        type: string
       produces:
       - application/json
       responses:

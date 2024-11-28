@@ -11,7 +11,7 @@ import (
 // @Summary	exist permission for organization and volunteers
 // @Accept json
 // @Produce json
-// @Param name path int true "name"
+// @Param name path string true "name"
 // @Security Bearer
 // @Success     200 {object} models.SuccessResponse{result=[]models.Event}
 // @Failure default {object} models.ErrorResponse
