@@ -15,6 +15,60 @@ type OrganizationRepository struct {
 func NewOrganizationRepository(db *pgxpool.Pool) models.OrganizationRepository {
 	return &OrganizationRepository{db: db}
 }
+func (op *OrganizationRepository) GetAllOrganizations(c context.Context) ([]models.OrganizationProfile, error) {
+	var organizations []models.OrganizationProfile
+
+	query := `
+		SELECT id, email, poster_url, name, phone_number, city, information, direction, volunteer_experience_years
+		FROM organizations`
+	rows, err := op.db.Query(c, query)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var org models.OrganizationProfile
+
+		// Scan basic organization details
+		err := rows.Scan(
+			&org.ID,
+			&org.Email,
+			&org.PosterUrl,
+			&org.Name,
+			&org.PhoneNumber,
+			&org.City,
+			&org.Information,
+			&org.Direction,
+			&org.VolunteerExperienceYears,
+		)
+		if err != nil {
+			return nil, err
+		}
+
+		// Populate FinishedProjects for the organization
+		org.FinishedProjects, err = op.getProjectsByStatus(c, int(org.ID), true)
+		if err != nil {
+			return nil, err
+		}
+
+		// Populate current Projects for the organization
+		org.Projects, err = op.getProjectsByStatus(c, int(org.ID), false)
+		if err != nil {
+			return nil, err
+		}
+
+		// Append to the result list
+		organizations = append(organizations, org)
+	}
+
+	// Check for any errors encountered during iteration
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return organizations, nil
+}
 
 func (op *OrganizationRepository) DeleteOrganization(c context.Context, id int) error {
 	query := `DELETE FROM organizations WHERE id = $1`

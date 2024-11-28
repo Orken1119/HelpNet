@@ -1,4 +1,11 @@
 definitions:
+  github_com_Orken1119_HelpNet_internal_models.Certificate:
+    properties:
+      certificate_url:
+        type: string
+      id:
+        type: integer
+    type: object
   github_com_Orken1119_HelpNet_internal_models.ChangePasswordRequest:
     properties:
       code:
@@ -382,29 +389,6 @@ paths:
       - Bearer: []
       tags:
       - event
-  /events/finished-events-by-organization:
-    get:
-      consumes:
-      - application/json
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
-      security:
-      - Bearer: []
-      tags:
-      - event
   /events/get-event-by-id/{id}:
     get:
       consumes:
@@ -449,80 +433,16 @@ paths:
       - Bearer: []
       tags:
       - event
-  /events/get-organizations-in-process:
-    get:
-      consumes:
-      - application/json
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
-      security:
-      - Bearer: []
-      tags:
-      - event
-  /events/get-user-participating:
-    get:
-      consumes:
-      - application/json
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
-      security:
-      - Bearer: []
-      tags:
-      - event
-  /events/get-volunteer-finished-events:
-    get:
-      consumes:
-      - application/json
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
-      security:
-      - Bearer: []
-      tags:
-      - event
-  /events/participate-event/{id}:
+  /events/participate-event/{userID}/{id}:
     post:
       consumes:
       - application/json
       parameters:
+      - description: userID
+        in: path
+        name: userID
+        required: true
+        type: integer
       - description: id
         in: path
         name: id
@@ -635,7 +555,7 @@ paths:
       - Bearer: []
       tags:
       - organization
-  /organizations/profile:
+  /organizations/get-all-organizations-profile:
     get:
       consumes:
       - application/json
@@ -654,6 +574,59 @@ paths:
       - Bearer: []
       tags:
       - organization
+  /organizations/profile/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
+      security:
+      - Bearer: []
+      tags:
+      - organization
+  /user/add-certificate:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: query params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.Certificate'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
+      security:
+      - Bearer: []
+      tags:
+      - user
   /user/change-password:
     put:
       consumes:
@@ -710,6 +683,33 @@ paths:
       - Bearer: []
       tags:
       - user
+  /user/delete-certificate/{id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
+      security:
+      - Bearer: []
+      tags:
+      - user
   /user/edit-profile:
     put:
       consumes:
@@ -738,10 +738,35 @@ paths:
       - Bearer: []
       tags:
       - user
-  /user/profile:
+  /user/get-all-volunteers-profile:
     get:
       consumes:
       - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
+      security:
+      - Bearer: []
+      tags:
+      - user
+  /user/profile/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
       produces:
       - application/json
       responses:

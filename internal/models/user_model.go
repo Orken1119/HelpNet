@@ -14,20 +14,26 @@ type User struct {
 }
 
 type Volunteer struct {
-	ID           uint      `json:"id"`
-	Email        string    `json:"email"`
-	Name         *string   `json:"name,omitempty"`
-	PhotoUrl     *string   `json:"photo_url,omitempty"`
-	Password     *string   `json:"password,omitempty"`
-	PhoneNumber  *string   `json:"phoneNumber"`
-	RoleID       uint      `json:"roleId"`
-	CreatedAt    time.Time `json:"created_at"`
-	Skills       *string   `json:"skills,omitempty"`
-	City         *string   `json:"city,omitempty"`
-	Age          *int      `json:"age,omitempty"`
-	EventsNow    *[]Event  `json:"events_now"`
-	Participated *[]Event  `json:"finished"`
-	Grade        *int      `json:"grade"`
+	ID           uint           `json:"id"`
+	Email        string         `json:"email"`
+	Name         *string        `json:"name,omitempty"`
+	PhotoUrl     *string        `json:"photo_url,omitempty"`
+	Password     *string        `json:"password,omitempty"`
+	PhoneNumber  *string        `json:"phoneNumber"`
+	RoleID       uint           `json:"roleId"`
+	CreatedAt    time.Time      `json:"created_at"`
+	Skills       *string        `json:"skills,omitempty"`
+	City         *string        `json:"city,omitempty"`
+	Age          *int           `json:"age,omitempty"`
+	EventsNow    *[]Event       `json:"events_now"`
+	Participated *[]Event       `json:"finished"`
+	Grade        *int           `json:"grade"`
+	Certificates *[]Certificate `json:"certificates"`
+}
+
+type Certificate struct {
+	ID       int    `json:"id"`
+	ImageUrl string `json:"certificate_url"`
 }
 
 type ChangePasswordRequest struct {
@@ -52,18 +58,19 @@ type VolunteerSignUp struct {
 }
 
 type VolunteerProfile struct {
-	ID           uint     `json:"id"`
-	PhotoUrl     *string  `json:"photo_url,omitempty"`
-	Email        string   `json:"email"`
-	PhoneNumber  *string  `json:"phoneNumber"`
-	Name         *string  `json:"name"`
-	Skills       *string  `json:"skills"`
-	City         *string  `json:"city"`
-	Age          *int     `json:"age"`
-	Direction    *string  `json:"direction"`
-	Grade        *int     `json:"grade"`
-	EventsNow    *[]Event `json:"events_now"`
-	Participated *[]Event `json:"finished"`
+	ID           uint           `json:"id"`
+	PhotoUrl     *string        `json:"photo_url,omitempty"`
+	Email        string         `json:"email"`
+	PhoneNumber  *string        `json:"phoneNumber"`
+	Name         *string        `json:"name"`
+	Skills       *string        `json:"skills"`
+	City         *string        `json:"city"`
+	Age          *int           `json:"age"`
+	Direction    *string        `json:"direction"`
+	Grade        *int           `json:"grade"`
+	EventsNow    *[]Event       `json:"events_now"`
+	Participated *[]Event       `json:"finished"`
+	Certificates *[]Certificate `json:"certificates"`
 }
 
 type VolunteerProfileEditing struct {
@@ -130,6 +137,10 @@ type UserRepository interface {
 	ChangePassword(c context.Context, userID int, password string) error
 	ChangePasswordForOrg(c context.Context, orgID int, password string) error
 	EditVolunteerProfile(c context.Context, userID int, volunteer VolunteerProfileEditing) error
+	GetAllVolunteers(c context.Context) ([]VolunteerProfile, error)
+
+	AddCertificate(c context.Context, imageUrl string, userID int) error
+	DeleteCertificate(c context.Context, id int) error
 }
 
 func (u *User) GetID() uint {

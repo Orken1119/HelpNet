@@ -62,10 +62,13 @@ func Setup(app pkg.Application, router *gin.Engine) {
 
 	userRouter := router.Group("/user")
 	{
-		userRouter.GET("/profile", userController.GetProfile)
+		userRouter.GET("/profile/:id", userController.GetProfile)
 		userRouter.PUT("/edit-profile", userController.EditPersonalData)
 		userRouter.PUT("/change-password", userController.ChangePassword)
 		userRouter.PUT("/change-password-for-org", userController.ChangePasswordForOrg)
+		userRouter.POST("/add-certificate", userController.AddCertificate)
+		userRouter.DELETE("/delete-certificate/:id", userController.DeleteCertificate)
+		userRouter.GET("/get-all-volunteers-profile", userController.GetAllVolunteersProfile)
 	}
 
 	eventRouter := router.Group("/events")
@@ -79,14 +82,15 @@ func Setup(app pkg.Application, router *gin.Engine) {
 		eventRouter.GET("/get-organizations-in-process", eventController.GetOrgEvents)
 		eventRouter.GET("/get-user-participating", eventController.GetVolEvents)
 		eventRouter.GET("/get-volunteer-finished-events", eventController.GetVolFinishedEvents)
-		eventRouter.POST("/participate-event/:id", eventController.JoinEvent)
+		eventRouter.POST("/participate-event/:userID/:id", eventController.JoinEvent)
 		eventRouter.PUT("/update-event/:id", eventController.UpdateEvent)
 	}
 
 	organizationRouter := router.Group("/organizations")
 	{
 		organizationRouter.DELETE("/delete-organiztion/:id", organizationController.DeleteOrganization)
-		organizationRouter.GET("/profile", organizationController.GetOrganizationProfile)
+		organizationRouter.GET("/profile/:id", organizationController.GetOrganizationProfile)
 		organizationRouter.PUT("/edit-organization-profile", organizationController.EditOrganization)
+		organizationRouter.GET("/get-all-organizations-profile", organizationController.GetAllOrganizationsProfile)
 	}
 }

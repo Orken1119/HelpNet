@@ -7,14 +7,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// @Tags        event
-// @Accept      json
-// @Produce     json
-// @Security    Bearer
-// @Success     200 {object} models.SuccessResponse
-// @Failure     400 {object} models.ErrorResponse
-// @Failure     500 {object} models.ErrorResponse
-// @Router      /events/get-user-participating [get]
 func (av *EventController) GetVolEvents(c *gin.Context) {
 	userID := c.GetUint("userID")
 

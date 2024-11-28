@@ -35,7 +35,7 @@ func (ur *UserRepository) GetVolunteerProfile(c context.Context, userID int) (mo
 		       e.necessary_people_count, e.members_count, e.finished
 		FROM events e
 		JOIN volunteer_events ve ON ve.event_id = e.id
-		WHERE ve.volunteer_id = $1 AND ve.finished = false`
+		WHERE ve.volunteer_id = $1 AND e.finished = false`
 	currentRows, err := ur.db.Query(c, currentEventsQuery, userID)
 	if err != nil {
 		return user, err
@@ -62,7 +62,7 @@ func (ur *UserRepository) GetVolunteerProfile(c context.Context, userID int) (mo
 		       e.necessary_people_count, e.members_count, e.finished
 		FROM events e
 		JOIN volunteer_events ve ON ve.event_id = e.id
-		WHERE ve.volunteer_id = $1 AND ve.finished = true`
+		WHERE ve.volunteer_id = $1 AND e.finished = true`
 	finishedRows, err := ur.db.Query(c, finishedEventsQuery, userID)
 	if err != nil {
 		return user, err
@@ -81,8 +81,107 @@ func (ur *UserRepository) GetVolunteerProfile(c context.Context, userID int) (mo
 		finishedEvents = append(finishedEvents, event)
 	}
 	user.Participated = &finishedEvents
+	user.Certificates, err = ur.getCertificates(c, userID)
+	if err != nil {
+		return user, nil
+	}
 
 	return user, nil
+}
+
+func (ur *UserRepository) GetAllVolunteers(c context.Context) ([]models.VolunteerProfile, error) {
+	var volunteers []models.VolunteerProfile
+
+	// Query all basic volunteer profiles
+	profileQuery := `
+		SELECT id, email, photo_url, phone_number, name, skills, city, age, grade
+		FROM volunteers`
+	rows, err := ur.db.Query(c, profileQuery)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var user models.VolunteerProfile
+
+		// Scan basic volunteer details
+		err := rows.Scan(&user.ID, &user.Email, &user.PhotoUrl, &user.PhoneNumber,
+			&user.Name, &user.Skills, &user.City, &user.Age, &user.Grade)
+		if err != nil {
+			return nil, err
+		}
+
+		// Query and populate current events
+		currentEventsQuery := `
+			SELECT e.id, e.event_name, e.information, e.organization_id, e.poster_url, 
+			       e.preview_url, e.skill_direction, e.address, e.start_date, e.end_date,
+			       e.necessary_people_count, e.members_count, e.finished
+			FROM events e
+			JOIN volunteer_events ve ON ve.event_id = e.id
+			WHERE ve.volunteer_id = $1 AND e.finished = false`
+		currentRows, err := ur.db.Query(c, currentEventsQuery, user.ID)
+		if err != nil {
+			return nil, err
+		}
+
+		var currentEvents []models.Event
+		for currentRows.Next() {
+			var event models.Event
+			if err := currentRows.Scan(&event.ID, &event.Name, &event.Information, &event.OrganizationID,
+				&event.PosterUrl, &event.PreviewUrl, &event.SkillsDirection, &event.Address,
+				&event.StartingDate, &event.EndDate, &event.NecCountOfPeople,
+				&event.HowManyPeopleAccepted, &event.Finished); err != nil {
+				return nil, err
+			}
+			currentEvents = append(currentEvents, event)
+		}
+		currentRows.Close()
+		user.EventsNow = &currentEvents
+
+		// Query and populate finished events
+		finishedEventsQuery := `
+			SELECT e.id, e.event_name, e.information, e.organization_id, e.poster_url, 
+			       e.preview_url, e.skill_direction, e.address, e.start_date, e.end_date,
+			       e.necessary_people_count, e.members_count, e.finished
+			FROM events e
+			JOIN volunteer_events ve ON ve.event_id = e.id
+			WHERE ve.volunteer_id = $1 AND e.finished = true`
+		finishedRows, err := ur.db.Query(c, finishedEventsQuery, user.ID)
+		if err != nil {
+			return nil, err
+		}
+
+		var finishedEvents []models.Event
+		for finishedRows.Next() {
+			var event models.Event
+			if err := finishedRows.Scan(&event.ID, &event.Name, &event.Information, &event.OrganizationID,
+				&event.PosterUrl, &event.PreviewUrl, &event.SkillsDirection, &event.Address,
+				&event.StartingDate, &event.EndDate, &event.NecCountOfPeople,
+				&event.HowManyPeopleAccepted, &event.Finished); err != nil {
+				return nil, err
+			}
+			finishedEvents = append(finishedEvents, event)
+		}
+		finishedRows.Close()
+		user.Participated = &finishedEvents
+
+		// Query and populate certificates
+		user.Certificates, err = ur.getCertificates(c, int(user.ID))
+		if err != nil {
+			return nil, err
+		}
+
+		// Add the user to the list of volunteers
+		volunteers = append(volunteers, user)
+	}
+
+	// Check for any errors during iteration
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return volunteers, nil
 }
 
 func (ur *UserRepository) GetCodeByEmail(c context.Context, email string) (string, error) {
@@ -366,4 +465,57 @@ func (ur *UserRepository) CreateUserVolunteer(c context.Context, request *models
 		return 0, err
 	}
 	return userID, nil
+}
+
+func (ur *UserRepository) AddCertificate(c context.Context, imageUrl string, userID int) error {
+	query1 := `INSERT INTO volunteer_certificates (
+		volunteer_id, image_url
+	)
+	VALUES ($1, $2)`
+
+	_, err := ur.db.Exec(c, query1, userID, imageUrl)
+	if err != nil {
+		return err
+	}
+	return nil
+
+}
+
+func (ur *UserRepository) DeleteCertificate(c context.Context, id int) error {
+	query := `DELETE FROM volunteer_certificates WHERE id = $1`
+
+	_, err := ur.db.Exec(c, query, id)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (ur *UserRepository) getCertificates(c context.Context, userID int) (*[]models.Certificate, error) {
+	var certificates []models.Certificate
+
+	query := `
+	SELECT id, image_url FROM volunteer_certificates WHERE volunteer_id = $1`
+
+	rows, err := ur.db.Query(c, query, userID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var certificate models.Certificate
+		if err = rows.Scan(&certificate.ID, &certificate.ImageUrl); err != nil {
+			return nil, err
+		}
+		certificates = append(certificates, certificate)
+	}
+
+	// Check for errors that may have occurred during iteration
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return &certificates, nil
 }
