@@ -16,7 +16,7 @@ type EventController struct {
 // @Produce	json
 // @Param request body models.EventForCreating true "query params"
 // @Security Bearer
-// @Success	200		{object}	models.SuccessResponse
+// @Success     200 {object} models.SuccessResponse{result=models.Event}
 // @Failure	default	{object}	models.ErrorResponse
 // @Router		/events/create-event [post]
 func (av *EventController) CreateEvent(c *gin.Context) {

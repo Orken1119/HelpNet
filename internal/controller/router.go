@@ -84,6 +84,7 @@ func Setup(app pkg.Application, router *gin.Engine) {
 		eventRouter.GET("/get-volunteer-finished-events", eventController.GetVolFinishedEvents)
 		eventRouter.POST("/participate-event/:userID/:id", eventController.JoinEvent)
 		eventRouter.PUT("/update-event/:id", eventController.UpdateEvent)
+		eventRouter.GET("/get-event-by-direction/:direction", eventController.GetEventsByDirection)
 	}
 
 	organizationRouter := router.Group("/organizations")

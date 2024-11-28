@@ -11,7 +11,7 @@ import (
 // @Accept json
 // @Produce json
 // @Security Bearer
-// @Success 200 {object} models.SuccessResponse
+// @Success     200 {object} models.SuccessResponse{result=[]models.VolunteerProfile}
 // @Failure default {object} models.ErrorResponse
 // @Router /user/get-all-volunteers-profile [get]
 func (sc *UserController) GetAllVolunteersProfile(c *gin.Context) {

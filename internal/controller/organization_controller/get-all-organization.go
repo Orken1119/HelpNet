@@ -11,7 +11,7 @@ import (
 // @Accept json
 // @Produce json
 // @Security Bearer
-// @Success 200 {object} models.SuccessResponse
+// @Success     200 {object} models.SuccessResponse{result=[]models.OrganizationProfile}
 // @Failure default {object} models.ErrorResponse
 // @Router /organizations/get-all-organizations-profile [get]
 func (av *OrganizationController) GetAllOrganizationsProfile(c *gin.Context) {

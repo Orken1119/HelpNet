@@ -10,12 +10,15 @@ import (
 // @Tags		event
 // @Accept		json
 // @Produce	json
+// @Param directioin path string true "direction"
 // @Security Bearer
 // @Success     200 {object} models.SuccessResponse{result=[]models.Event}
 // @Failure	default	{object}	models.ErrorResponse
-// @Router		/events/get-events [get]
-func (av *EventController) GetAllEvent(c *gin.Context) {
-	ivents, err := av.EventRepository.GetAllEvent(c)
+// @Router		/events/get-event-by-direction/{direction} [get]
+func (av *EventController) GetEventsByDirection(c *gin.Context) {
+	direction := c.Param("direction")
+
+	ivent, err := av.EventRepository.GetEventsByDirection(c, direction)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
 			Result: []models.ErrorDetail{
@@ -28,5 +31,5 @@ func (av *EventController) GetAllEvent(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, models.SuccessResponse{Result: ivents})
+	c.JSON(http.StatusOK, models.SuccessResponse{Result: &ivent})
 }

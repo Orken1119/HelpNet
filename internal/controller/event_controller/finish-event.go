@@ -13,7 +13,7 @@ import (
 // @Produce     json
 // @Security    Bearer
 // @Param       id  path      int  true  "Event ID"
-// @Success     200 {object} models.SuccessResponse
+// @Success     200 {object} models.SuccessResponse{result=string} ""organization finished event successfully""
 // @Failure     400 {object} models.ErrorResponse
 // @Failure     500 {object} models.ErrorResponse
 // @Router      /events/finish/{id} [put]

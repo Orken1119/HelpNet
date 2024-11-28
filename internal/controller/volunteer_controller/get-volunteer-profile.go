@@ -17,7 +17,7 @@ type UserController struct {
 // @Produce json
 // @Param id path int true "id"
 // @Security Bearer
-// @Success 200 {object} models.SuccessResponse
+// @Success     200 {object} models.SuccessResponse{result=models.VolunteerProfile}
 // @Failure default {object} models.ErrorResponse
 // @Router /user/profile/{id} [get]
 func (sc *UserController) GetProfile(c *gin.Context) {

@@ -271,7 +271,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse"
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "result": {
+                                            "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.Event"
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     },
                     "default": {
@@ -312,7 +324,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse"
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "result": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     },
                     "default": {
@@ -351,9 +375,21 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "organization finished event successfully",
                         "schema": {
-                            "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse"
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "result": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     },
                     "400": {
@@ -364,6 +400,62 @@ const docTemplate = `{
                     },
                     "500": {
                         "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/events/get-event-by-direction/{direction}": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "event"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "direction",
+                        "name": "directioin",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "result": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.Event"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "default": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse"
                         }
@@ -400,7 +492,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse"
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "result": {
+                                            "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.Event"
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     },
                     "default": {
@@ -432,7 +536,22 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse"
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "result": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.Event"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     },
                     "default": {
@@ -478,9 +597,21 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "Successfully joined the event",
                         "schema": {
-                            "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse"
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "result": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     },
                     "400": {
@@ -536,9 +667,21 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "Event created successfully",
                         "schema": {
-                            "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse"
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "result": {
+                                            "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.Event"
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     },
                     "400": {
@@ -585,7 +728,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse"
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "result": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     },
                     "default": {
@@ -628,7 +783,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse"
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "result": {
+                                            "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.OrganizationProfileEditing"
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     },
                     "default": {
@@ -660,7 +827,22 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse"
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "result": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.OrganizationProfile"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     },
                     "default": {
@@ -701,7 +883,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse"
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "result": {
+                                            "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.OrganizationProfile"
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     },
                     "default": {
@@ -744,10 +938,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "result": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     },
                     "default": {
@@ -788,7 +991,7 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "Password successfully changed",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -834,7 +1037,7 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "Password successfully changed",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -878,7 +1081,7 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "certificate was deleted",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -924,7 +1127,7 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "Personal data was changed",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -961,7 +1164,22 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse"
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "result": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.VolunteerProfile"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     },
                     "default": {
@@ -1002,7 +1220,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse"
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "result": {
+                                            "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.VolunteerProfile"
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     },
                     "default": {
@@ -1063,6 +1293,56 @@ const docTemplate = `{
                     "items": {
                         "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorDetail"
                     }
+                }
+            }
+        },
+        "github_com_Orken1119_HelpNet_internal_models.Event": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "type": "string"
+                },
+                "end_data": {
+                    "type": "string"
+                },
+                "event_name": {
+                    "type": "string"
+                },
+                "finished": {
+                    "type": "boolean"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "information": {
+                    "type": "string"
+                },
+                "members_count": {
+                    "type": "integer"
+                },
+                "members_info": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.VolunteerMainInfo"
+                    }
+                },
+                "neccessary_people_count": {
+                    "type": "integer"
+                },
+                "organization_id": {
+                    "type": "integer"
+                },
+                "poster_url": {
+                    "type": "string"
+                },
+                "preview_url": {
+                    "type": "string"
+                },
+                "skill_direction": {
+                    "type": "string"
+                },
+                "start_data": {
+                    "type": "string"
                 }
             }
         },
@@ -1138,6 +1418,50 @@ const docTemplate = `{
             "properties": {
                 "email": {
                     "type": "string"
+                }
+            }
+        },
+        "github_com_Orken1119_HelpNet_internal_models.OrganizationProfile": {
+            "type": "object",
+            "properties": {
+                "city": {
+                    "type": "string"
+                },
+                "direction": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "events": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.Event"
+                    }
+                },
+                "finished_ivents": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.Event"
+                    }
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "information": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "phoneNumber": {
+                    "type": "string"
+                },
+                "poster_url": {
+                    "type": "string"
+                },
+                "years_of_experience": {
+                    "type": "integer"
                 }
             }
         },
@@ -1226,6 +1550,94 @@ const docTemplate = `{
                 "result": {}
             }
         },
+        "github_com_Orken1119_HelpNet_internal_models.VolunteerMainInfo": {
+            "type": "object",
+            "properties": {
+                "age": {
+                    "type": "integer"
+                },
+                "city": {
+                    "type": "string"
+                },
+                "direction": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "grade": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "phoneNumber": {
+                    "type": "string"
+                },
+                "photo_url": {
+                    "type": "string"
+                },
+                "skills": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_Orken1119_HelpNet_internal_models.VolunteerProfile": {
+            "type": "object",
+            "properties": {
+                "age": {
+                    "type": "integer"
+                },
+                "certificates": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.Certificate"
+                    }
+                },
+                "city": {
+                    "type": "string"
+                },
+                "direction": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "events_now": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.Event"
+                    }
+                },
+                "finished": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.Event"
+                    }
+                },
+                "grade": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "phoneNumber": {
+                    "type": "string"
+                },
+                "photo_url": {
+                    "type": "string"
+                },
+                "skills": {
+                    "type": "string"
+                }
+            }
+        },
         "github_com_Orken1119_HelpNet_internal_models.VolunteerProfileEditing": {
             "type": "object",
             "properties": {
@@ -1275,7 +1687,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "helpnet-1.onrender.com",
+	Host:             "localhost:2000",
 	BasePath:         "",
 	Schemes:          []string{},
 	Title:            "HelpNet API",

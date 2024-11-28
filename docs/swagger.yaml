@@ -31,6 +31,39 @@ definitions:
           $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorDetail'
         type: array
     type: object
+  github_com_Orken1119_HelpNet_internal_models.Event:
+    properties:
+      address:
+        type: string
+      end_data:
+        type: string
+      event_name:
+        type: string
+      finished:
+        type: boolean
+      id:
+        type: integer
+      information:
+        type: string
+      members_count:
+        type: integer
+      members_info:
+        items:
+          $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.VolunteerMainInfo'
+        type: array
+      neccessary_people_count:
+        type: integer
+      organization_id:
+        type: integer
+      poster_url:
+        type: string
+      preview_url:
+        type: string
+      skill_direction:
+        type: string
+      start_data:
+        type: string
+    type: object
   github_com_Orken1119_HelpNet_internal_models.EventForCreating:
     properties:
       address:
@@ -79,6 +112,35 @@ definitions:
     properties:
       email:
         type: string
+    type: object
+  github_com_Orken1119_HelpNet_internal_models.OrganizationProfile:
+    properties:
+      city:
+        type: string
+      direction:
+        type: string
+      email:
+        type: string
+      events:
+        items:
+          $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.Event'
+        type: array
+      finished_ivents:
+        items:
+          $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.Event'
+        type: array
+      id:
+        type: integer
+      information:
+        type: string
+      name:
+        type: string
+      phoneNumber:
+        type: string
+      poster_url:
+        type: string
+      years_of_experience:
+        type: integer
     type: object
   github_com_Orken1119_HelpNet_internal_models.OrganizationProfileEditing:
     properties:
@@ -135,6 +197,64 @@ definitions:
         $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.Properties'
       result: {}
     type: object
+  github_com_Orken1119_HelpNet_internal_models.VolunteerMainInfo:
+    properties:
+      age:
+        type: integer
+      city:
+        type: string
+      direction:
+        type: string
+      email:
+        type: string
+      grade:
+        type: integer
+      id:
+        type: integer
+      name:
+        type: string
+      phoneNumber:
+        type: string
+      photo_url:
+        type: string
+      skills:
+        type: string
+    type: object
+  github_com_Orken1119_HelpNet_internal_models.VolunteerProfile:
+    properties:
+      age:
+        type: integer
+      certificates:
+        items:
+          $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.Certificate'
+        type: array
+      city:
+        type: string
+      direction:
+        type: string
+      email:
+        type: string
+      events_now:
+        items:
+          $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.Event'
+        type: array
+      finished:
+        items:
+          $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.Event'
+        type: array
+      grade:
+        type: integer
+      id:
+        type: integer
+      name:
+        type: string
+      phoneNumber:
+        type: string
+      photo_url:
+        type: string
+      skills:
+        type: string
+    type: object
   github_com_Orken1119_HelpNet_internal_models.VolunteerProfileEditing:
     properties:
       age:
@@ -159,7 +279,7 @@ definitions:
 externalDocs:
   description: OpenAPI
   url: https://swagger.io/resources/open-api/
-host: helpnet-1.onrender.com
+host: localhost:2000
 info:
   contact:
     email: support@swagger.io
@@ -326,7 +446,12 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse'
+            allOf:
+            - $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse'
+            - properties:
+                result:
+                  $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.Event'
+              type: object
         default:
           description: ""
           schema:
@@ -351,7 +476,12 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse'
+            allOf:
+            - $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse'
+            - properties:
+                result:
+                  type: string
+              type: object
         default:
           description: ""
           schema:
@@ -374,15 +504,52 @@ paths:
       - application/json
       responses:
         "200":
-          description: OK
+          description: organization finished event successfully
           schema:
-            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse'
+            allOf:
+            - $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse'
+            - properties:
+                result:
+                  type: string
+              type: object
         "400":
           description: Bad Request
           schema:
             $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
         "500":
           description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
+      security:
+      - Bearer: []
+      tags:
+      - event
+  /events/get-event-by-direction/{direction}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: direction
+        in: path
+        name: directioin
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse'
+            - properties:
+                result:
+                  items:
+                    $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.Event'
+                  type: array
+              type: object
+        default:
+          description: ""
           schema:
             $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.ErrorResponse'
       security:
@@ -405,7 +572,12 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse'
+            allOf:
+            - $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse'
+            - properties:
+                result:
+                  $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.Event'
+              type: object
         default:
           description: ""
           schema:
@@ -424,7 +596,14 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse'
+            allOf:
+            - $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse'
+            - properties:
+                result:
+                  items:
+                    $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.Event'
+                  type: array
+              type: object
         default:
           description: ""
           schema:
@@ -452,9 +631,14 @@ paths:
       - application/json
       responses:
         "200":
-          description: OK
+          description: Successfully joined the event
           schema:
-            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse'
+            allOf:
+            - $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse'
+            - properties:
+                result:
+                  type: string
+              type: object
         "400":
           description: Bad Request
           schema:
@@ -488,9 +672,14 @@ paths:
       - application/json
       responses:
         "200":
-          description: OK
+          description: Event created successfully
           schema:
-            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse'
+            allOf:
+            - $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse'
+            - properties:
+                result:
+                  $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.Event'
+              type: object
         "400":
           description: Bad Request
           schema:
@@ -520,7 +709,12 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse'
+            allOf:
+            - $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse'
+            - properties:
+                result:
+                  type: string
+              type: object
         default:
           description: ""
           schema:
@@ -546,7 +740,12 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse'
+            allOf:
+            - $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse'
+            - properties:
+                result:
+                  $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.OrganizationProfileEditing'
+              type: object
         default:
           description: ""
           schema:
@@ -565,7 +764,14 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse'
+            allOf:
+            - $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse'
+            - properties:
+                result:
+                  items:
+                    $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.OrganizationProfile'
+                  type: array
+              type: object
         default:
           description: ""
           schema:
@@ -590,7 +796,12 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse'
+            allOf:
+            - $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse'
+            - properties:
+                result:
+                  $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.OrganizationProfile'
+              type: object
         default:
           description: ""
           schema:
@@ -616,9 +827,12 @@ paths:
         "200":
           description: OK
           schema:
-            additionalProperties:
-              type: string
-            type: object
+            allOf:
+            - $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse'
+            - properties:
+                result:
+                  type: string
+              type: object
         default:
           description: ""
           schema:
@@ -642,7 +856,7 @@ paths:
       - application/json
       responses:
         "200":
-          description: OK
+          description: Password successfully changed
           schema:
             additionalProperties:
               type: string
@@ -670,7 +884,7 @@ paths:
       - application/json
       responses:
         "200":
-          description: OK
+          description: Password successfully changed
           schema:
             additionalProperties:
               type: string
@@ -697,7 +911,7 @@ paths:
       - application/json
       responses:
         "200":
-          description: OK
+          description: certificate was deleted
           schema:
             additionalProperties:
               type: string
@@ -725,7 +939,7 @@ paths:
       - application/json
       responses:
         "200":
-          description: OK
+          description: Personal data was changed
           schema:
             additionalProperties:
               type: string
@@ -748,7 +962,14 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse'
+            allOf:
+            - $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse'
+            - properties:
+                result:
+                  items:
+                    $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.VolunteerProfile'
+                  type: array
+              type: object
         default:
           description: ""
           schema:
@@ -773,7 +994,12 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse'
+            allOf:
+            - $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.SuccessResponse'
+            - properties:
+                result:
+                  $ref: '#/definitions/github_com_Orken1119_HelpNet_internal_models.VolunteerProfile'
+              type: object
         default:
           description: ""
           schema:

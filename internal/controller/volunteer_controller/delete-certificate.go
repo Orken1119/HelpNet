@@ -13,7 +13,7 @@ import (
 // @Produce json
 // @Param id path int true "id"
 // @Security Bearer
-// @Success 200 {object} map[string]string
+// @Success     200 {object} map[string]string "certificate was deleted"
 // @Failure default {object} models.ErrorResponse
 // @Router /user/delete-certificate/{id} [delete]
 func (sc *UserController) DeleteCertificate(c *gin.Context) {

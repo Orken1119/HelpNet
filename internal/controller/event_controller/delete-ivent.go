@@ -13,7 +13,7 @@ import (
 // @Produce	json
 // @Param id path int true "id"
 // @Security Bearer
-// @Success	200		{object}	models.SuccessResponse
+// @Success     200 {object} models.SuccessResponse{result=string}
 // @Failure	default	{object}	models.ErrorResponse
 // @Router		/events/delete-event/{id} [delete]
 func (av *EventController) DeleteEvent(c *gin.Context) {

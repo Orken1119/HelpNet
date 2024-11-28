@@ -13,7 +13,7 @@ import (
 // @Produce json
 // @Param id path int true "id"
 // @Security Bearer
-// @Success 200 {object} models.SuccessResponse
+// @Success     200 {object} models.SuccessResponse{result=models.OrganizationProfile}
 // @Failure default {object} models.ErrorResponse
 // @Router /organizations/profile/{id} [get]
 func (av *OrganizationController) GetOrganizationProfile(c *gin.Context) {

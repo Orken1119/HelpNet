@@ -14,7 +14,7 @@ import (
 // @Param userID path int true "userID"
 // @Param id path int true "id"
 // @Security    Bearer
-// @Success     200 {object} models.SuccessResponse
+// @Success     200 {object} models.SuccessResponse{result=string} "Successfully joined the event"
 // @Failure     400 {object} models.ErrorResponse
 // @Failure     500 {object} models.ErrorResponse
 // @Router      /events/participate-event/{userID}/{id} [post]

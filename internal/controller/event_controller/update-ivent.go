@@ -16,7 +16,7 @@ import (
 // @Param		id path int true "id"
 // @Param		request body models.EventForEditing true "Event details"
 // @Security	Bearer
-// @Success	200 {object} models.SuccessResponse
+// @Success     200 {object} models.SuccessResponse{result=models.Event} "Event created successfully"
 // @Failure	400 {object} models.ErrorResponse "Bad Request"
 // @Failure	404 {object} models.ErrorResponse "Event not found"
 // @Router		/events/update-event/{id} [put]

@@ -12,7 +12,7 @@ import (
 // @Produce json
 // @Param request body models.VolunteerProfileEditing true "query params"
 // @Security Bearer
-// @Success 200 {object} map[string]string
+// @Success     200 {object} map[string]string "Personal data was changed"
 // @Failure default {object} models.ErrorResponse
 // @Router /user/edit-profile [put]
 func (sc *UserController) EditPersonalData(c *gin.Context) {

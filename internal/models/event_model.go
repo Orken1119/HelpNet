@@ -59,4 +59,5 @@ type EventRepository interface {
 	GetVolunteerParticipatingEvents(c context.Context, userID int) (*[]Event, error)
 	GetVolunteerFinishedEvents(c context.Context, userID int) (*[]Event, error)
 	GetVolunteersForEvent(c context.Context, eventID int) (*[]VolunteerMainInfo, error)
+	GetEventsByDirection(c context.Context, direction string) (*[]Event, error)
 }

@@ -51,6 +51,48 @@ func (or *EventRepository) DeleteEvent(c context.Context, id int) error {
 	_, err := or.db.Exec(c, query, id)
 	return err
 }
+func (or *EventRepository) GetEventsByDirection(c context.Context, direction string) (*[]models.Event, error) {
+	query := `
+        SELECT 
+            id, event_name, information, organization_id, poster_url, 
+            preview_url, skill_direction, address, start_date, end_date, 
+            necessary_people_count, members_count, finished
+        FROM events 
+        WHERE skill_direction = $1 AND finished = false
+    `
+	rows, err := or.db.Query(c, query, direction)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var events []models.Event
+	for rows.Next() {
+		var event models.Event
+		if err := rows.Scan(&event.ID, &event.Name, &event.Information, &event.OrganizationID,
+			&event.PosterUrl, &event.PreviewUrl, &event.SkillsDirection, &event.Address,
+			&event.StartingDate, &event.EndDate, &event.NecCountOfPeople,
+			&event.HowManyPeopleAccepted, &event.Finished); err != nil {
+			return nil, err
+		}
+
+		// Fetch the list of volunteers for the current event
+		members, err := or.GetVolunteersForEvent(c, event.ID)
+		if err != nil {
+			return nil, err
+		}
+		event.Members = members
+
+		events = append(events, event)
+	}
+
+	// Check for any errors during iteration
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return &events, nil
+}
 
 func (or *EventRepository) UpdateEvent(c context.Context, event *models.EventForEditing, eventID int) error {
 	query := `UPDATE events SET event_name = $1, information = $2, poster_url = $3, preview_url = $4, 
@@ -140,6 +182,7 @@ func (or *EventRepository) GetAllEvent(c context.Context) (*[]models.Event, erro
 
 	return &events, nil
 }
+
 func (or *EventRepository) GetEventById(c context.Context, id int) (*models.Event, error) {
 	query := `
         SELECT 

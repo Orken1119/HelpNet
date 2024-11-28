@@ -13,7 +13,7 @@ import (
 // @Produce	json
 // @Param id path int true "id"
 // @Security Bearer
-// @Success	200		{object}	models.SuccessResponse
+// @Success     200 {object} models.SuccessResponse{result=models.Event}
 // @Failure	default	{object}	models.ErrorResponse
 // @Router		/events/get-event-by-id/{id} [get]
 func (av *EventController) GetEventById(c *gin.Context) {

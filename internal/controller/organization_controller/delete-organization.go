@@ -17,7 +17,7 @@ type OrganizationController struct {
 // @Produce	json
 // @Param id path int true "id"
 // @Security Bearer
-// @Success	200		{object}	models.SuccessResponse
+// @Success     200 {object} models.SuccessResponse{result=string}
 // @Failure	default	{object}	models.ErrorResponse
 // @Router		/organizations/delete-organizations/{id} [delete]
 func (av *OrganizationController) DeleteOrganization(c *gin.Context) {

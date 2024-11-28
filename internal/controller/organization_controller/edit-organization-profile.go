@@ -12,7 +12,7 @@ import (
 // @Produce	json
 // @Param request body models.OrganizationProfileEditing true "query params"
 // @Security Bearer
-// @Success	200		{object}	models.SuccessResponse
+// @Success     200 {object} models.SuccessResponse{result=models.OrganizationProfileEditing}
 // @Failure	default	{object}	models.ErrorResponse
 // @Router		/organizations/edit-organization-profile [put]
 func (av *OrganizationController) EditOrganization(c *gin.Context) {
