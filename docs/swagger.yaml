@@ -265,8 +265,6 @@ definitions:
         type: string
       email:
         type: string
-      id:
-        type: integer
       name:
         type: string
       phoneNumber:
