@@ -41,7 +41,7 @@ func (av *EventController) GetEventById(c *gin.Context) {
 			Result: []models.ErrorDetail{
 				{
 					Code:    "IVENT_ERROR",
-					Message: "Error to get all ivents",
+					Message: "Error to get event",
 				},
 			},
 		})

@@ -26,7 +26,7 @@ func (sc *UserController) EditPersonalData(c *gin.Context) {
 			Result: []models.ErrorDetail{
 				{
 					Code:    "ERROR_BIND_JSON",
-					Message: "Datas dont match with struct of changePassword",
+					Message: "Datas dont match with struct of profile editing",
 				},
 			},
 		})

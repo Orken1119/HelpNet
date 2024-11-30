@@ -45,7 +45,7 @@ func (av *EventController) JoinEvent(c *gin.Context) {
 			Result: []models.ErrorDetail{
 				{
 					Code:    "PARTICIPATE_EVENT_ERROR",
-					Message: "Error adding the user to the event.",
+					Message: "Error in adding the user to the event.",
 					Metadata: models.Properties{
 						Properties1: err.Error(),
 					},

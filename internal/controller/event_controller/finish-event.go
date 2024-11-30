@@ -40,7 +40,7 @@ func (av *EventController) FinishEvent(c *gin.Context) {
 			Result: []models.ErrorDetail{
 				{
 					Code:    "FINISH_EVENT_ERROR",
-					Message: "Error finishing the event",
+					Message: "Error in finishing the event",
 				},
 			},
 		})

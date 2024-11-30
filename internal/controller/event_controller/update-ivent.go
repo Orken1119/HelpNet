@@ -46,7 +46,7 @@ func (av *EventController) UpdateEvent(c *gin.Context) {
 			Result: []models.ErrorDetail{
 				{
 					Code:    "ERROR_BIND_JSON",
-					Message: "Datas dont match with struct of signin",
+					Message: "Datas dont match with expected structure",
 				},
 			},
 		})
@@ -59,7 +59,7 @@ func (av *EventController) UpdateEvent(c *gin.Context) {
 			Result: []models.ErrorDetail{
 				{
 					Code:    "IVENT_ERROR",
-					Message: "Error to create ivent",
+					Message: "Error to update ivent",
 					Metadata: models.Properties{
 						Properties1: err.Error(),
 					},

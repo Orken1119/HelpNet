@@ -26,7 +26,6 @@ func (ur *UserRepository) SearchEvent(c context.Context, name string) (*[]models
         FROM events
         WHERE event_name ILIKE $1
     `
-	// Подготовка строки поиска (например, добавление % для шаблонного поиска)
 	searchTerm := "%" + name + "%"
 
 	rows, err := ur.db.Query(c, query, searchTerm)
@@ -45,7 +44,6 @@ func (ur *UserRepository) SearchEvent(c context.Context, name string) (*[]models
 			return nil, err
 		}
 
-		// Добавление списка волонтеров к событию (опционально)
 		members, err := ur.getVolunteersForEvent(c, event.ID)
 		if err != nil {
 			return nil, err
@@ -55,7 +53,6 @@ func (ur *UserRepository) SearchEvent(c context.Context, name string) (*[]models
 		events = append(events, event)
 	}
 
-	// Проверка ошибок после итерации по строкам
 	if err = rows.Err(); err != nil {
 		return nil, err
 	}
@@ -66,7 +63,6 @@ func (ur *UserRepository) SearchEvent(c context.Context, name string) (*[]models
 func (ur *UserRepository) GetVolunteerProfile(c context.Context, userID int) (models.VolunteerProfile, error) {
 	var user models.VolunteerProfile
 
-	// Query basic volunteer profile details
 	profileQuery := `SELECT id, email, photo_url, phone_number, name, skills, city, age, grade FROM volunteers WHERE id = $1`
 	row := ur.db.QueryRow(c, profileQuery, userID)
 	err := row.Scan(&user.ID, &user.Email, &user.PhotoUrl, &user.PhoneNumber, &user.Name, &user.Skills, &user.City, &user.Age, &user.Grade)
@@ -74,7 +70,6 @@ func (ur *UserRepository) GetVolunteerProfile(c context.Context, userID int) (mo
 		return user, err
 	}
 
-	// Query current events the volunteer is participating in
 	currentEventsQuery := `
 		SELECT e.id, e.event_name, e.information, e.organization_id, e.poster_url, 
 		       e.preview_url, e.skill_direction, e.address, e.start_date, e.end_date,
@@ -101,7 +96,6 @@ func (ur *UserRepository) GetVolunteerProfile(c context.Context, userID int) (mo
 	}
 	user.EventsNow = &currentEvents
 
-	// Query finished events the volunteer participated in
 	finishedEventsQuery := `
 		SELECT e.id, e.event_name, e.information, e.organization_id, e.poster_url, 
 		       e.preview_url, e.skill_direction, e.address, e.start_date, e.end_date,
@@ -138,7 +132,6 @@ func (ur *UserRepository) GetVolunteerProfile(c context.Context, userID int) (mo
 func (ur *UserRepository) GetAllVolunteers(c context.Context) ([]models.VolunteerProfile, error) {
 	var volunteers []models.VolunteerProfile
 
-	// Query all basic volunteer profiles
 	profileQuery := `
 		SELECT id, email, photo_url, phone_number, name, skills, city, age, grade
 		FROM volunteers`
@@ -151,14 +144,12 @@ func (ur *UserRepository) GetAllVolunteers(c context.Context) ([]models.Voluntee
 	for rows.Next() {
 		var user models.VolunteerProfile
 
-		// Scan basic volunteer details
 		err := rows.Scan(&user.ID, &user.Email, &user.PhotoUrl, &user.PhoneNumber,
 			&user.Name, &user.Skills, &user.City, &user.Age, &user.Grade)
 		if err != nil {
 			return nil, err
 		}
 
-		// Query and populate current events
 		currentEventsQuery := `
 			SELECT e.id, e.event_name, e.information, e.organization_id, e.poster_url, 
 			       e.preview_url, e.skill_direction, e.address, e.start_date, e.end_date,
@@ -185,7 +176,6 @@ func (ur *UserRepository) GetAllVolunteers(c context.Context) ([]models.Voluntee
 		currentRows.Close()
 		user.EventsNow = &currentEvents
 
-		// Query and populate finished events
 		finishedEventsQuery := `
 			SELECT e.id, e.event_name, e.information, e.organization_id, e.poster_url, 
 			       e.preview_url, e.skill_direction, e.address, e.start_date, e.end_date,
@@ -212,17 +202,14 @@ func (ur *UserRepository) GetAllVolunteers(c context.Context) ([]models.Voluntee
 		finishedRows.Close()
 		user.Participated = &finishedEvents
 
-		// Query and populate certificates
 		user.Certificates, err = ur.getCertificates(c, int(user.ID))
 		if err != nil {
 			return nil, err
 		}
 
-		// Add the user to the list of volunteers
 		volunteers = append(volunteers, user)
 	}
 
-	// Check for any errors during iteration
 	if err = rows.Err(); err != nil {
 		return nil, err
 	}
@@ -558,7 +545,6 @@ func (ur *UserRepository) getCertificates(c context.Context, userID int) (*[]mod
 		certificates = append(certificates, certificate)
 	}
 
-	// Check for errors that may have occurred during iteration
 	if err = rows.Err(); err != nil {
 		return nil, err
 	}

@@ -60,7 +60,7 @@ func (av *OrganizationController) DeleteMember(c *gin.Context) {
 			Result: []models.ErrorDetail{
 				{
 					Code:    "DELETE_ORGANIZATION_ERROR",
-					Message: "Error to delete organization",
+					Message: "Error to delete member",
 				},
 			},
 		})

@@ -27,7 +27,7 @@ func (av *OrganizationController) EditOrganization(c *gin.Context) {
 			Result: []models.ErrorDetail{
 				{
 					Code:    "ERROR_BIND_JSON",
-					Message: "Datas dont match with struct of signin",
+					Message: "Datas dont match with struct of organization profile",
 				},
 			},
 		})
@@ -40,7 +40,7 @@ func (av *OrganizationController) EditOrganization(c *gin.Context) {
 			Result: []models.ErrorDetail{
 				{
 					Code:    "IVENT_ERROR",
-					Message: "Error to create ivent",
+					Message: "Error to edit organization profile",
 					Metadata: models.Properties{
 						Properties1: err.Error(),
 					},

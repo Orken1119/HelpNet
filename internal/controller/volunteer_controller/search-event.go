@@ -25,7 +25,7 @@ func (sc *UserController) SearchEvent(c *gin.Context) {
 			Result: []models.ErrorDetail{
 				{
 					Code:    "ERROR_SEARCH_EVENT",
-					Message: "Can't get event from db",
+					Message: "Can't find event event with this name",
 					Metadata: models.Properties{
 						Properties1: err.Error(),
 					},

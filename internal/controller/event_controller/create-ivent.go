@@ -42,7 +42,7 @@ func (av *EventController) CreateEvent(c *gin.Context) {
 			Result: []models.ErrorDetail{
 				{
 					Code:    "IVENT_ERROR",
-					Message: "Error creating event",
+					Message: "Error on creating event",
 					Metadata: models.Properties{
 						Properties1: err.Error(),
 					},

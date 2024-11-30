@@ -22,13 +22,11 @@ func (op *OrganizationRepository) DeleteMemberFromEvent(c context.Context, userI
         WHERE volunteer_id = $1 AND event_id = $2
     `
 
-	// Выполнение запроса
 	_, err := op.db.Exec(c, query, userID, eventID)
 	if err != nil {
 		return err
 	}
 
-	// Опционально обновляем количество участников в событии
 	updateEventQuery := `
         UPDATE events
         SET members_count = members_count - 1
@@ -57,7 +55,6 @@ func (op *OrganizationRepository) GetAllOrganizations(c context.Context) ([]mode
 	for rows.Next() {
 		var org models.OrganizationProfile
 
-		// Scan basic organization details
 		err := rows.Scan(
 			&org.ID,
 			&org.Email,
@@ -73,23 +70,19 @@ func (op *OrganizationRepository) GetAllOrganizations(c context.Context) ([]mode
 			return nil, err
 		}
 
-		// Populate FinishedProjects for the organization
 		org.FinishedProjects, err = op.getProjectsByStatus(c, int(org.ID), true)
 		if err != nil {
 			return nil, err
 		}
 
-		// Populate current Projects for the organization
 		org.Projects, err = op.getProjectsByStatus(c, int(org.ID), false)
 		if err != nil {
 			return nil, err
 		}
 
-		// Append to the result list
 		organizations = append(organizations, org)
 	}
 
-	// Check for any errors encountered during iteration
 	if err = rows.Err(); err != nil {
 		return nil, err
 	}
@@ -135,7 +128,6 @@ func (op *OrganizationRepository) EditOrganizationProfile(c context.Context, org
 func (op *OrganizationRepository) GetOrganizationProfile(c context.Context, id int) (*models.OrganizationProfile, error) {
 	var org models.OrganizationProfile
 
-	// Основной запрос для данных организации
 	query := `
 		SELECT id, email, poster_url, name, phone_number, city, information, direction, volunteer_experience_years
 		FROM organizations
@@ -157,13 +149,11 @@ func (op *OrganizationRepository) GetOrganizationProfile(c context.Context, id i
 		return nil, err
 	}
 
-	// Получение завершённых проектов
 	org.FinishedProjects, err = op.getProjectsByStatus(c, id, true)
 	if err != nil {
 		return nil, err
 	}
 
-	// Получение текущих проектов
 	org.Projects, err = op.getProjectsByStatus(c, id, false)
 	if err != nil {
 		return nil, err
@@ -172,7 +162,6 @@ func (op *OrganizationRepository) GetOrganizationProfile(c context.Context, id i
 	return &org, nil
 }
 
-// Вспомогательный метод для получения проектов
 func (op *OrganizationRepository) getProjectsByStatus(c context.Context, organizationID int, finished bool) (*[]models.Event, error) {
 	query := `
 		SELECT e.id, e.event_name, e.information, e.organization_id, e.poster_url, e.preview_url, 
@@ -208,7 +197,6 @@ func (op *OrganizationRepository) getProjectsByStatus(c context.Context, organiz
 			return nil, err
 		}
 
-		// Заполнение участников проекта
 		event.Members, err = op.getEventMembers(c, event.ID)
 		if err != nil {
 			return nil, err
@@ -220,7 +208,6 @@ func (op *OrganizationRepository) getProjectsByStatus(c context.Context, organiz
 	return &events, nil
 }
 
-// Вспомогательный метод для получения участников проекта
 func (op *OrganizationRepository) getEventMembers(c context.Context, eventID int) (*[]models.VolunteerMainInfo, error) {
 	query := `
 		SELECT v.id, v.name, v.photo_url, v.phone_number, v.city, v.skills, v.age, v.direction, v.grade

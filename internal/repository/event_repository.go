@@ -15,7 +15,6 @@ func NewEventRepository(db *pgxpool.Pool) models.EventRepository {
 	return &EventRepository{db: db}
 }
 
-// Event Repository methods
 func (or *EventRepository) CreateEvent(c context.Context, event *models.EventForCreating) (*models.Event, error) {
 	query := `INSERT INTO events (event_name, information, organization_id, poster_url, preview_url, 
                                skill_direction, address, start_date, end_date, necessary_people_count) 
@@ -76,7 +75,6 @@ func (or *EventRepository) GetEventsByDirection(c context.Context, direction str
 			return nil, err
 		}
 
-		// Fetch the list of volunteers for the current event
 		members, err := or.GetVolunteersForEvent(c, event.ID)
 		if err != nil {
 			return nil, err
@@ -127,7 +125,6 @@ func (or *EventRepository) GetOrganizationsInProcessEvents(c context.Context, or
 			return nil, err
 		}
 
-		// Получаем список волонтеров для текущего события
 		members, err := or.GetVolunteersForEvent(c, event.ID)
 		if err != nil {
 			return nil, err
@@ -165,7 +162,6 @@ func (or *EventRepository) GetAllEvent(c context.Context) (*[]models.Event, erro
 			return nil, err
 		}
 
-		// Получаем список волонтеров для текущего события
 		members, err := or.GetVolunteersForEvent(c, event.ID)
 		if err != nil {
 			return nil, err
@@ -199,7 +195,6 @@ func (or *EventRepository) GetEventById(c context.Context, id int) (*models.Even
 		return nil, err
 	}
 
-	// Получение списка волонтеров для данного события
 	members, err := or.GetVolunteersForEvent(c, event.ID)
 	if err != nil {
 		return nil, err
@@ -209,16 +204,13 @@ func (or *EventRepository) GetEventById(c context.Context, id int) (*models.Even
 	return &event, nil
 }
 
-// FinishEvent marks the event as finished
 func (or *EventRepository) FinishEvent(c context.Context, id int) error {
 	query := `UPDATE events SET finished = true WHERE id = $1`
 	_, err := or.db.Exec(c, query, id)
 	return err
 }
 
-// ParticipateEvent allows a volunteer to participate in an event
 func (or *EventRepository) ParticipateEvent(c context.Context, userID int, eventID int) error {
-	// Добавление участника в таблицу volunteer_events
 	participateQuery := `
 		INSERT INTO volunteer_events (volunteer_id, event_id) 
 		VALUES ($1, $2);`
@@ -227,7 +219,6 @@ func (or *EventRepository) ParticipateEvent(c context.Context, userID int, event
 		return err
 	}
 
-	// Увеличение количества участников в таблице events
 	updateMembersQuery := `
 		UPDATE events 
 		SET members_count = members_count + 1 
@@ -240,7 +231,6 @@ func (or *EventRepository) ParticipateEvent(c context.Context, userID int, event
 	return nil
 }
 
-// GetVolunteerParticipatingEvents retrieves events a volunteer is currently participating in
 func (or *EventRepository) GetVolunteerParticipatingEvents(c context.Context, userID int) (*[]models.Event, error) {
 	query := `SELECT e.* FROM events e 
               JOIN volunteer_events ve ON ve.event_id = e.id 
@@ -266,9 +256,7 @@ func (or *EventRepository) GetVolunteerParticipatingEvents(c context.Context, us
 	return &events, nil
 }
 
-// GetVolunteerFinishedEvents retrieves events a volunteer has finished
 func (or *EventRepository) GetVolunteerFinishedEvents(c context.Context, userID int) (*[]models.Event, error) {
-	// Основной запрос для получения завершенных событий волонтера
 	query := `SELECT e.id, e.event_name, e.information, e.organization_id, 
                      e.poster_url, e.preview_url, e.skill_direction, e.address, 
                      e.start_date, e.end_date, e.necessary_people_count, 
@@ -285,7 +273,6 @@ func (or *EventRepository) GetVolunteerFinishedEvents(c context.Context, userID 
 	var events []models.Event
 	for rows.Next() {
 		var event models.Event
-		// Считываем данные события
 		if err := rows.Scan(&event.ID, &event.Name, &event.Information, &event.OrganizationID,
 			&event.PosterUrl, &event.PreviewUrl, &event.SkillsDirection, &event.Address,
 			&event.StartingDate, &event.EndDate, &event.NecCountOfPeople,
@@ -293,7 +280,6 @@ func (or *EventRepository) GetVolunteerFinishedEvents(c context.Context, userID 
 			return nil, err
 		}
 
-		// Подзапрос для получения участников события
 		membersQuery := `SELECT v.id, v.name, v.email, v.photo_url, v.skills, v.city, v.age, v.direction, v.grade 
                          FROM volunteers v 
                          JOIN volunteer_events ve ON ve.volunteer_id = v.id 
@@ -315,10 +301,8 @@ func (or *EventRepository) GetVolunteerFinishedEvents(c context.Context, userID 
 		}
 		memberRows.Close()
 
-		// Присваиваем участников событию
 		event.Members = &members
 
-		// Добавляем событие в результат
 		events = append(events, event)
 	}
 
@@ -380,7 +364,6 @@ func (or *EventRepository) GetFinishedEventsByOrganization(c context.Context, id
 			return nil, err
 		}
 
-		// Получаем список волонтеров для текущего события
 		members, err := or.GetVolunteersForEvent(c, event.ID)
 		if err != nil {
 			return nil, err
