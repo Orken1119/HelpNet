@@ -1,6 +1,7 @@
 package organization
 
 import (
+	"errors"
 	"net/http"
 
 	"github.com/Orken1119/HelpNet/internal/models"
@@ -36,18 +37,27 @@ func (av *OrganizationController) EditOrganization(c *gin.Context) {
 
 	err = av.OrganizationRepository.EditOrganizationProfile(c, int(orgID), &org)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, models.ErrorResponse{
-			Result: []models.ErrorDetail{
-				{
-					Code:    "IVENT_ERROR",
-					Message: "Error to edit organization profile",
-					Metadata: models.Properties{
-						Properties1: err.Error(),
+		if errors.Is(err, models.ErrEmailAlreadyExists) {
+			c.JSON(http.StatusBadRequest, models.ErrorResponse{
+				Result: []models.ErrorDetail{
+					{
+						Code:    "ERROR_BIND_JSON",
+						Message: "organization with this email already exisists",
 					},
 				},
-			},
-		})
-		return
+			})
+			return
+		} else {
+			c.JSON(http.StatusBadRequest, models.ErrorResponse{
+				Result: []models.ErrorDetail{
+					{
+						Code:    "ERROR_BIND_JSON",
+						Message: "Datas dont match with struct of profile editing",
+					},
+				},
+			})
+			return
+		}
 	}
 
 	c.JSON(http.StatusOK, models.SuccessResponse{Result: org})

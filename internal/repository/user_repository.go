@@ -7,6 +7,7 @@ import (
 
 	"github.com/Orken1119/HelpNet/internal/models"
 	"github.com/jackc/pgx/v4/pgxpool"
+	"github.com/lib/pq"
 )
 
 type UserRepository struct {
@@ -364,8 +365,12 @@ func (ur *UserRepository) EditVolunteerProfile(c context.Context, userID int, vo
 		volunteer.Direction,
 		userID)
 	if err != nil {
+		if pgErr, ok := err.(*pq.Error); ok && pgErr.Code == "23505" {
+			return models.ErrEmailAlreadyExists
+		}
 		return err
 	}
+
 	return nil
 }
 

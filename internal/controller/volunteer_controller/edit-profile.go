@@ -1,6 +1,7 @@
 package volunteer_controller
 
 import (
+	"errors"
 	"net/http"
 
 	models "github.com/Orken1119/HelpNet/internal/models"
@@ -22,15 +23,27 @@ func (sc *UserController) EditPersonalData(c *gin.Context) {
 
 	err := c.ShouldBind(&request)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, models.ErrorResponse{
-			Result: []models.ErrorDetail{
-				{
-					Code:    "ERROR_BIND_JSON",
-					Message: "Datas dont match with struct of profile editing",
+		if errors.Is(err, models.ErrEmailAlreadyExists) {
+			c.JSON(http.StatusBadRequest, models.ErrorResponse{
+				Result: []models.ErrorDetail{
+					{
+						Code:    "ERROR_BIND_JSON",
+						Message: "user with this email already exisists",
+					},
 				},
-			},
-		})
-		return
+			})
+			return
+		} else {
+			c.JSON(http.StatusBadRequest, models.ErrorResponse{
+				Result: []models.ErrorDetail{
+					{
+						Code:    "ERROR_BIND_JSON",
+						Message: "Datas dont match with struct of profile editing",
+					},
+				},
+			})
+			return
+		}
 	}
 
 	err = sc.UserRepository.EditVolunteerProfile(c, int(userID), request)

@@ -6,6 +6,7 @@ import (
 
 	"github.com/Orken1119/HelpNet/internal/models"
 	"github.com/jackc/pgx/v4/pgxpool"
+	"github.com/lib/pq"
 )
 
 type OrganizationRepository struct {
@@ -121,6 +122,9 @@ func (op *OrganizationRepository) EditOrganizationProfile(c context.Context, org
 		organization.VolunteerExperienceYears,
 		orgID)
 	if err != nil {
+		if pgErr, ok := err.(*pq.Error); ok && pgErr.Code == "23505" {
+			return models.ErrEmailAlreadyExists
+		}
 		return err
 	}
 	return nil

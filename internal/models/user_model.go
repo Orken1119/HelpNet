@@ -2,6 +2,7 @@ package models
 
 import (
 	"context"
+	"errors"
 	"time"
 )
 
@@ -74,7 +75,6 @@ type VolunteerProfile struct {
 }
 
 type VolunteerProfileEditing struct {
-	ID          uint    `json:"id"`
 	PhotoUrl    *string `json:"photo_url,omitempty"`
 	Email       string  `json:"email"`
 	PhoneNumber *string `json:"phoneNumber"`
@@ -97,6 +97,8 @@ type VolunteerMainInfo struct {
 	Direction   *string `json:"direction"`
 	Grade       *int    `json:"grade"`
 }
+
+var ErrEmailAlreadyExists = errors.New("email already exists")
 
 type LoginRequest struct {
 	Email    string   `json:"email"`
