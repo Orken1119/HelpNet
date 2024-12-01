@@ -505,7 +505,7 @@ func (ur *UserRepository) CreateUserVolunteer(c context.Context, request *models
 	return userID, nil
 }
 
-func (ur *UserRepository) AddCertificate(c context.Context, imageUrl string, userID int) error {
+func (ur *UserRepository) AddCertificate(c context.Context, imageUrl []byte, userID int) error {
 	query1 := `INSERT INTO volunteer_certificates (
 		volunteer_id, image_url
 	)

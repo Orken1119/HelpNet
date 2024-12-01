@@ -141,7 +141,7 @@ type UserRepository interface {
 	EditVolunteerProfile(c context.Context, userID int, volunteer VolunteerProfileEditing) error
 	GetAllVolunteers(c context.Context) ([]VolunteerProfile, error)
 
-	AddCertificate(c context.Context, imageUrl string, userID int) error
+	AddCertificate(c context.Context, imageUrl []byte, userID int) error
 	DeleteCertificate(c context.Context, id int) error
 
 	SearchEvent(c context.Context, name string) (*[]Event, error)
