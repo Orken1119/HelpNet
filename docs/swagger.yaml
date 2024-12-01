@@ -2,7 +2,9 @@ definitions:
   github_com_Orken1119_HelpNet_internal_models.Certificate:
     properties:
       certificate_url:
-        type: string
+        items:
+          type: integer
+        type: array
       id:
         type: integer
     type: object

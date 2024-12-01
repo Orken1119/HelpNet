@@ -1385,7 +1385,10 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "certificate_url": {
-                    "type": "string"
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
                 },
                 "id": {
                     "type": "integer"

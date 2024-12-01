@@ -34,7 +34,7 @@ type Volunteer struct {
 
 type Certificate struct {
 	ID       int    `json:"id"`
-	ImageUrl string `json:"certificate_url"`
+	ImageUrl []byte `json:"certificate_url"`
 }
 
 type ChangePasswordRequest struct {
