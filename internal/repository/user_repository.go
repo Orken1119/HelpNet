@@ -505,13 +505,18 @@ func (ur *UserRepository) CreateUserVolunteer(c context.Context, request *models
 	return userID, nil
 }
 
-func (ur *UserRepository) AddCertificate(c context.Context, imageUrl []byte, userID int) error {
+func (ur *UserRepository) AddCertificate(c context.Context, imageUrl string, userID int) error {
+	cleanImageUrl := imageUrl
+	if idx := len("data:image/jpeg;base64,"); len(imageUrl) > idx && imageUrl[:idx] == "data:image/jpeg;base64," {
+		cleanImageUrl = imageUrl[idx:]
+	}
+
 	query1 := `INSERT INTO volunteer_certificates (
 		volunteer_id, image_url
 	)
 	VALUES ($1, $2)`
 
-	_, err := ur.db.Exec(c, query1, userID, imageUrl)
+	_, err := ur.db.Exec(c, query1, userID, cleanImageUrl)
 	if err != nil {
 		return err
 	}

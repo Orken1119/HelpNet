@@ -1002,7 +1002,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.Certificate"
+                            "$ref": "#/definitions/github_com_Orken1119_HelpNet_internal_models.AddingSertificate"
                         }
                     }
                 ],
@@ -1381,6 +1381,14 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "github_com_Orken1119_HelpNet_internal_models.AddingSertificate": {
+            "type": "object",
+            "properties": {
+                "certificate_url": {
+                    "type": "string"
+                }
+            }
+        },
         "github_com_Orken1119_HelpNet_internal_models.Certificate": {
             "type": "object",
             "properties": {

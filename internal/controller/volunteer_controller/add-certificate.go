@@ -11,13 +11,13 @@ import (
 // @Summary	exist permission for volunteer
 // @Accept json
 // @Produce json
-// @Param request body models.Certificate true "query params"
+// @Param request body models.AddingSertificate true "query params"
 // @Security Bearer
 // @Success     200 {object} models.SuccessResponse{result=string}
 // @Failure default {object} models.ErrorResponse
 // @Router /user/add-certificate [post]
 func (sc *UserController) AddCertificate(c *gin.Context) {
-	var request models.Certificate
+	var request models.AddingSertificate
 	userID := c.GetUint("userID")
 
 	err := c.ShouldBind(&request)
