@@ -497,7 +497,7 @@ func (ur *UserRepository) CreateUserVolunteer(c context.Context, request *models
 		request.Email,
 		request.Password.Password,
 		currentTime,
-		1,
+		2,
 	).Scan(&userID)
 	if err != nil {
 		return 0, err
