@@ -48,7 +48,7 @@ func (cp *AuthController) ForgotPassword(c *gin.Context) {
 
 	// Sender data.
 	from := "ork.en389@gmail.com"
-	password := "gtks bubt apvo pwge"
+	password := ""
 
 	// Receiver email address.
 	to := []string{
